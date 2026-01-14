@@ -20,7 +20,7 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - name: run tests
+      - name: Run Android Emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
@@ -42,6 +42,9 @@ jobs:
               echo "Emulator failed to start in time."
               exit 1
             fi
+
+            # Run test if emulator is ready
+            ./gradlew connectedCheck
 
       - name: Check Emulator Status
         run: |
