@@ -26,13 +26,25 @@ jobs:
           api-level: 29
           script: |
             # Wait for the emulator to be ready
-            adb -s emulator-5554 wait-for-device
-            adb -s emulator-5554 shell getprop sys.boot_completed
-            echo "Emulator started and boot completed!"
+            retries=10
+            while [ $retries -gt 0 ]; do
+              adb -s emulator-5554 shell getprop sys.boot_completed
+              if [ $? -eq 0 ]; then
+                echo "Emulator is ready"
+                break
+              fi
+              echo "Waiting for emulator to be ready..."
+              sleep 5
+              retries=$((retries-1))
+            done
+
+            if [ $retries -eq 0 ]; then
+              echo "Emulator failed to start in time."
+              exit 1
+            fi
 
       - name: Check Emulator Status
         run: |
-          # Check the emulator's status to verify it's running
+          # Check if emulator is still running
           adb -s emulator-5554 shell getprop sys.boot_completed
-          adb -s emulator-5554 shell getprop dev.bootcomplete
           adb -s emulator-5554 shell input keyevent 82  # Unlock screen if it's locked
