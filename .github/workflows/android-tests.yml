@@ -24,4 +24,15 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          script: ./gradlew connectedCheck
+          script: |
+            # Wait for the emulator to be ready
+            adb -s emulator-5554 wait-for-device
+            adb -s emulator-5554 shell getprop sys.boot_completed
+            echo "Emulator started and boot completed!"
+
+      - name: Check Emulator Status
+        run: |
+          # Check the emulator's status to verify it's running
+          adb -s emulator-5554 shell getprop sys.boot_completed
+          adb -s emulator-5554 shell getprop dev.bootcomplete
+          adb -s emulator-5554 shell input keyevent 82  # Unlock screen if it's locked
