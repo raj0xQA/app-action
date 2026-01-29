@@ -58,7 +58,16 @@ jobs:
           api-level: 36   # API level for Android 16
           emulator-options: "-no-window -no-audio -no-snapshot"   # Options for headless emulator
           avd-name: "Pixel_4_API_36"  # Use the Pixel 4 emulator for Android 16
-          download-dependencies: true 
           script: |
             echo "Emulator started and boot completed!"
             npx wdio run wdio.conf.js
+
+# ['api-level', 'system-image-api-level', 
+# 'target', 'arch', 'profile', 'cores', 
+# 'ram-size', 'heap-size', 'sdcard-path-or-size', 
+# 'disk-size', 'avd-name', 'force-avd-creation', 
+# 'emulator-boot-timeout', 'emulator-port', 
+# 'emulator-options', 'disable-animations', 
+# 'disable-spellchecker', 'disable-linux-hw-accel', 
+# 'enable-hw-keyboard', 'emulator-build', 'working-directory',
+#  'ndk', 'cmake', 'channel', 'script', 'pre-emulator-launch-script']
