@@ -7,6 +7,25 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# Cancels all previous workflow runs for pull requests that have not completed.
+concurrency:
+    # The concurrency group contains the workflow name and the branch name for pull requests or the commit hash for any other events.
+    group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.sha }}
+    cancel-in-progress: true
+
+# workflow permissions
+permissions:
+    checks: write
+    contents: write
+    issues: write
+    pull-requests: write
+
+# workflow environment variables
+env:
+    FORCE_COLOR: 1
+    SHA: ${{ github.event.pull_request.head.sha }}
+    LOCAL_APP: ./apk/bstack.apk
+
 jobs:
   test:
     runs-on: ubuntu-latest
