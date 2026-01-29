@@ -29,9 +29,9 @@ export const config = {
   capabilities: [{
     // local
     platformName: "Android",
-    "appium:deviceName": "test",
+    "appium:deviceName": "Pixel_4_API_36",
     "appium:udid": "emulator-5554",
-    "appium:platformVersion": "10",
+    "appium:platformVersion": "16",
     // "appium:deviceName": "Pixel_API_30_ARM",
     // "appium:udid": "emulator-5554",
     // "appium:platformVersion": "11",
