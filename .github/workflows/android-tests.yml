@@ -24,7 +24,8 @@ permissions:
 env:
     FORCE_COLOR: 1
     SHA: ${{ github.event.pull_request.head.sha }}
-    LOCAL_APP: ${{ github.workspace }}/apk/bstack.apk
+    # LOCAL_APP: ${{ github.workspace }}/apk/bstack.apk
+    LOCAL_APP: ./apk/bstack.apk
 
 jobs:
   test:
@@ -51,6 +52,7 @@ jobs:
           ls
           cd apk
           ls
+          pwd
           
 
       - name: Enable KVM
