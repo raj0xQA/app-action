@@ -24,18 +24,34 @@ permissions:
 env:
     FORCE_COLOR: 1
     SHA: ${{ github.event.pull_request.head.sha }}
-    LOCAL_APP: ./apk/bstack.apk
+    LOCAL_APP: ${{ github.workspace }}/apk/bstack.apk
 
 jobs:
   test:
+    name: app test
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+
     steps:
-      - name: Checkout
+      - name: Checkout testing repo
         uses: actions/checkout@v4
+                    
+      - name: Use desired version of NodeJS
+        uses: actions/setup-node@v4
+        with:
+            node-version: 20
+            cache: npm
 
       - name: Install Dependencies
         run: |
-          npm install
+          npm ci || npm i
+          
+      - name: Install Dependencies
+        run: |
+          ls
+          cd apk
+          ls
+          
 
       - name: Enable KVM
         run: |
