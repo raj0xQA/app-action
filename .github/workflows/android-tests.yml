@@ -58,7 +58,7 @@ jobs:
         api-level: 34  # Android 14
         target: google_apis  # Google APIs usually have latest
         arch: x86_64  # 64-bit is more common for newer APIs
-        channel: 0  # Start with stable
+        channel: stable  # Start with stable
         # api-level: 29
         # force-avd-creation: true
         emulator-options: "-no-window -no-audio -no-snapshot -no-metrics" # Options for headless emulator
