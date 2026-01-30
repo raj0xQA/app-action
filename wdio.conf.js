@@ -29,9 +29,9 @@ export const config = {
   capabilities: [{
     // local
     platformName: "Android",
-    "appium:deviceName": "Pixel_4_API_35",
+    "appium:deviceName": "Pixel_4_API_34",
     "appium:udid": "emulator-5554",
-    "appium:platformVersion": "15",
+    "appium:platformVersion": "14",
     "appium:automationName": "UiAutomator2",
     "appium:app": process.env.LOCAL_APP,
     "appium:autoGrantPermissions": true,
