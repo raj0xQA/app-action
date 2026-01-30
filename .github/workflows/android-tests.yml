@@ -55,7 +55,7 @@ jobs:
     - name: Run Android Emulator
       uses: reactivecircus/android-emulator-runner@v2
       with:
-        api-level: 30
+        api-level: 29
         # force-avd-creation: true
         # emulator-options: "-no-window -no-audio -no-snapshot -no-metrics" # Options for headless emulator
         disable-spellchecker: true
