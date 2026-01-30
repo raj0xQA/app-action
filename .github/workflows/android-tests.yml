@@ -39,8 +39,8 @@ jobs:
     - name: Use desired version of NodeJS
       uses: actions/setup-node@v4
       with:
-          node-version: 20
-          cache: npm
+        node-version: 20
+        cache: npm
 
     - name: Install Dependencies
       run: |
@@ -60,7 +60,7 @@ jobs:
         arch: x86_64
         channel: stable
         force-avd-creation: true
-        emulator-options: "-no-window -no-audio -no-snapshot -no-metrics"
+        emulator-options: "-no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -no-metrics"
         disable-spellchecker: true
         ram-size: 2048M
         disk-size: 2048M
@@ -68,13 +68,3 @@ jobs:
         script: |
           echo "Emulator started and boot completed!"
           npx wdio run wdio.conf.js
-
-        # ['api-level', 'system-image-api-level', 
-        # 'target', 'arch', 'profile', 'cores', 
-        # 'ram-size', 'heap-size', 'sdcard-path-or-size', 
-        # 'disk-size', 'avd-name', 'force-avd-creation', 
-        # 'emulator-boot-timeout', 'emulator-port', 
-        # 'emulator-options', 'disable-animations', 
-        # 'disable-spellchecker', 'disable-linux-hw-accel', 
-        # 'enable-hw-keyboard', 'emulator-build', 'working-directory',
-        #  'ndk', 'cmake', 'channel', 'script', 'pre-emulator-launch-script']
