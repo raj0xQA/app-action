@@ -55,13 +55,12 @@ jobs:
     - name: Run Android Emulator
       uses: reactivecircus/android-emulator-runner@v2
       with:
-        api-level: 34
-        force-avd-creation: true
-        emulator-options: "-no-window -no-audio -no-snapshot -no-metrics" # Options for headless emulator
+        api-level: 33
+        # force-avd-creation: true
+        # emulator-options: "-no-window -no-audio -no-snapshot -no-metrics" # Options for headless emulator
         disable-spellchecker: true
-        avd-name: "Pixel_4_API_34"
+        # avd-name: "Pixel_4_API_34"
         script: |
-          sdkmanager --list | grep "system-images;android"
           echo "Available API levels listed above"
           echo "Emulator started and boot completed!"
         # npx wdio run wdio.conf.js
