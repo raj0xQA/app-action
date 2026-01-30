@@ -62,6 +62,8 @@ jobs:
         force-avd-creation: true
         emulator-options: "-no-window -no-audio -no-snapshot -no-metrics"
         disable-spellchecker: true
+        ram-size: 2048M
+        disk-size: 2048M
         avd-name: "Pixel_4_API_34"
         script: |
           echo "Emulator started and boot completed!"
