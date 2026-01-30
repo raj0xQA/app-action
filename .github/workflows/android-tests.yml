@@ -48,7 +48,7 @@ jobs:
 
     - name: List all available system images
       run: |
-        sdkmanager --list | grep "system-images;android
+        sdkmanager --list | grep "system-images;android"
 
     - name: Enable KVM
       run: |
