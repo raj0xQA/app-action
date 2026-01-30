@@ -33,18 +33,18 @@ jobs:
     timeout-minutes: 20
 
     steps:
-    # - name: Checkout testing repo
-    #   uses: actions/checkout@v4
+    - name: Checkout testing repo
+      uses: actions/checkout@v4
 
-    # - name: Use desired version of NodeJS
-    #   uses: actions/setup-node@v4
-    #   with:
-    #       node-version: 20
-    #       cache: npm
+    - name: Use desired version of NodeJS
+      uses: actions/setup-node@v4
+      with:
+          node-version: 20
+          cache: npm
 
-    # - name: Install Dependencies
-    #   run: |
-    #     npm ci || npm i
+    - name: Install Dependencies
+      run: |
+        npm ci || npm i
 
     - name: Enable KVM
       run: |
@@ -55,14 +55,14 @@ jobs:
     - name: Run Android Emulator
       uses: reactivecircus/android-emulator-runner@v2
       with:
-        api-level: 36
+        api-level: 34
         target: google_apis
         arch: x86_64
         channel: stable
         force-avd-creation: true
         emulator-options: "-no-window -no-audio -no-snapshot -no-metrics"
         disable-spellchecker: true
-        avd-name: "Pixel_4_API_36"
+        avd-name: "Pixel_4_API_34"
         script: |
           echo "Emulator started and boot completed!"
           npx wdio run wdio.conf.js
