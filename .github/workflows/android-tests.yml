@@ -57,13 +57,13 @@ jobs:
       with:
         api-level: 36  # Android 14
         target: google_apis  # Google APIs usually have latest
-        arch: x86_64  # 64-bit is more common for newer APIs
+        # arch: x86_64  # 64-bit is more common for newer APIs
         channel: stable  # Start with stable
         # api-level: 29
-        # force-avd-creation: true
+        force-avd-creation: true
         emulator-options: "-no-window -no-audio -no-snapshot -no-metrics" # Options for headless emulator
-        # disable-spellchecker: true
-        # avd-name: "Pixel_4_API_34"
+        disable-spellchecker: true
+        avd-name: "Pixel_4_API_36"
         script: |
           echo "Available API levels listed above"
           echo "Emulator started and boot completed!"
