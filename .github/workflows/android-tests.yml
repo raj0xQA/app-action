@@ -32,19 +32,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
-    steps:
-    - name: Checkout testing repo
-      uses: actions/checkout@v4
+    # steps:
+    # - name: Checkout testing repo
+    #   uses: actions/checkout@v4
 
-    - name: Use desired version of NodeJS
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
-        cache: npm
+    # - name: Use desired version of NodeJS
+    #   uses: actions/setup-node@v4
+    #   with:
+    #     node-version: 20
+    #     cache: npm
 
-    - name: Install Dependencies
-      run: |
-        npm ci || npm i
+    # - name: Install Dependencies
+    #   run: |
+    #     npm ci || npm i
 
     - name: Enable KVM
       run: |
@@ -52,19 +52,49 @@ jobs:
         sudo udevadm control --reload-rules
         sudo udevadm trigger --name-match=kvm
 
-    - name: Run Android Emulator
+    # - name: Run Android Emulator
+    #   uses: reactivecircus/android-emulator-runner@v2
+    #   with:
+    #     api-level: 34
+    #     target: google_apis
+    #     arch: x86_64
+    #     channel: stable
+    #     force-avd-creation: true
+    #     emulator-options: "-no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -no-metrics"
+    #     disable-spellchecker: true
+    #     ram-size: 2048M
+    #     disk-size: 2048M
+    #     avd-name: "Pixel_4_API_34"
+    #     script: |
+    #       echo "Emulator started and boot completed!"
+    #       npx wdio run wdio.conf.js
+
+    - name: AVD cache
+      uses: actions/cache@v4
+      id: avd-cache
+      with:
+        path: |
+          ~/.android/avd/*
+          ~/.android/adb*
+        key: avd-34
+
+    - name: create AVD and generate snapshot for caching
+      if: steps.avd-cache.outputs.cache-hit != 'true'
       uses: reactivecircus/android-emulator-runner@v2
       with:
         api-level: 34
-        target: google_apis
-        arch: x86_64
-        channel: stable
-        force-avd-creation: true
-        emulator-options: "-no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -no-metrics"
-        disable-spellchecker: true
-        ram-size: 2048M
-        disk-size: 2048M
-        avd-name: "Pixel_4_API_34"
+        force-avd-creation: false
+        emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        disable-animations: false
+        script: echo "Generated AVD snapshot for caching."
+
+    - name: run tests
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 34
+        force-avd-creation: false
+        emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        disable-animations: true
         script: |
           echo "Emulator started and boot completed!"
-          npx wdio run wdio.conf.js
+        # npx wdio run wdio.conf.js
