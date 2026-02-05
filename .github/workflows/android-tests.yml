@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
-    # steps:
+    steps:
     # - name: Checkout testing repo
     #   uses: actions/checkout@v4
 
