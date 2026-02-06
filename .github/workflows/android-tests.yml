@@ -93,8 +93,7 @@ jobs:
         # disk-size: 2048M
         force-avd-creation: false
         disable-animations: false
-        emulator-options: -no-snapshot -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect 
-        # -camera-back none -camera-front none -no-passive-gps -no-snapstorage
+        emulator-options: -no-snapshot -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back none -camera-front none -no-passive-gps -no-snapstorage
         script: echo "Generated AVD snapshot for caching."
 
     - name: run tests
@@ -111,9 +110,8 @@ jobs:
         # disk-size: 2048M
         force-avd-creation: false
         disable-animations: true
-        # disable-spellchecker: true
-        emulator-options: -no-snapshot-save -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect 
-        # -camera-back none -camera-front none -no-passive-gps -no-snapstorage -no-metrics
+        disable-spellchecker: true
+        emulator-options: -no-snapshot-save -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back none -camera-front none -no-passive-gps -no-snapstorage -no-metrics
         script: |
           echo "Emulator started and boot completed!"
         # npx wdio run wdio.conf.js
