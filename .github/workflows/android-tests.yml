@@ -33,18 +33,18 @@ jobs:
     timeout-minutes: 20
 
     steps:
-    # - name: Checkout testing repo
-    #   uses: actions/checkout@v4
+    - name: Checkout testing repo
+      uses: actions/checkout@v4
 
-    # - name: Use desired version of NodeJS
-    #   uses: actions/setup-node@v4
-    #   with:
-    #     node-version: 20
-    #     cache: npm
+    - name: Use desired version of NodeJS
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: npm
 
-    # - name: Install Dependencies
-    #   run: |
-    #     npm ci || npm i
+    - name: Install Dependencies
+      run: |
+        npm ci || npm i
 
     - name: Enable KVM
       run: |
@@ -76,7 +76,7 @@ jobs:
         path: |
           ~/.android/avd/*
           ~/.android/adb*
-        key: avd-34
+        key: avd-cache-34
 
     - name: create AVD and generate snapshot for caching
       if: steps.avd-cache.outputs.cache-hit != 'true'
@@ -86,9 +86,14 @@ jobs:
         target: google_apis
         arch: x86_64
         channel: stable
+        avd-name: test-avd-34
+        profile: pixel_4
+        ram-size: 2048M
+        heap-size: 512M
+        disk-size: 2048M
         force-avd-creation: false
-        emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: false
+        emulator-options: -no-snapshot -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back none -camera-front none -no-passive-gps -no-snapstorage
         script: echo "Generated AVD snapshot for caching."
 
     - name: run tests
@@ -98,9 +103,15 @@ jobs:
         target: google_apis
         arch: x86_64
         channel: stable
+        avd-name: test-avd-34
+        profile: pixel_4
+        ram-size: 2048M
+        heap-size: 512M
+        disk-size: 2048M
         force-avd-creation: false
-        emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
+        disable-spellchecker: true
+        emulator-options: -no-snapshot-save -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back none -camera-front none -no-passive-gps -no-snapstorage -delay-adb
         script: |
           echo "Emulator started and boot completed!"
-        # npx wdio run wdio.conf.js
+          npx wdio run wdio.conf.js
