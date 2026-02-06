@@ -86,11 +86,11 @@ jobs:
         target: google_apis
         arch: x86_64
         channel: stable
-        avd-name: test-avd-34
-        profile: pixel_4
-        ram-size: 2048M
-        heap-size: 512M
-        disk-size: 2048M
+        # avd-name: test-avd-34
+        # profile: pixel_4
+        # ram-size: 2048M
+        # heap-size: 512M
+        # disk-size: 2048M
         force-avd-creation: false
         disable-animations: false
         emulator-options: -no-snapshot -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back none -camera-front none -no-passive-gps -no-snapstorage
@@ -103,11 +103,11 @@ jobs:
         target: google_apis
         arch: x86_64
         channel: stable
-        avd-name: test-avd-34
-        profile: pixel_4
-        ram-size: 2048M
-        heap-size: 512M
-        disk-size: 2048M
+        # avd-name: test-avd-34
+        # profile: pixel_4
+        # ram-size: 2048M
+        # heap-size: 512M
+        # disk-size: 2048M
         force-avd-creation: false
         disable-animations: true
         disable-spellchecker: true
