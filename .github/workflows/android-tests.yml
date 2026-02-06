@@ -111,7 +111,7 @@ jobs:
         force-avd-creation: false
         disable-animations: true
         disable-spellchecker: true
-        emulator-options: -no-snapshot-save -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back none -camera-front none -no-passive-gps -no-snapstorage -delay-adb -no-metrics
+        emulator-options: -no-snapshot-save -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back none -camera-front none -no-passive-gps -no-snapstorage -no-metrics
         script: |
           echo "Emulator started and boot completed!"
         # npx wdio run wdio.conf.js
