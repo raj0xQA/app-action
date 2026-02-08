@@ -97,23 +97,30 @@ jobs:
     #     script: echo "Generated AVD snapshot for caching."
 
     - name: run tests
+      id: emu
       uses: reactivecircus/android-emulator-runner@v2
       with:
         api-level: 30
-        target: google_apis
-        arch: x86_64
+        # target: google_apis
+        # arch: x86_64
         # channel: stable
         # avd-name: test-avd-34
         # profile: pixel_4
         # ram-size: 2048M
         # heap-size: 512M
         # disk-size: 2048M
-        force-avd-creation: true
+        # force-avd-creation: true
         # force-avd-creation: false
-        disable-animations: true
-        disable-spellchecker: true
+        # disable-animations: true
+        # disable-spellchecker: true
         # emulator-options: -no-snapshot-save -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back none -camera-front none -no-passive-gps -no-snapstorage -no-metrics
         emulator-options: -no-snapshot -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -no-metrics
         script: |
           echo "Emulator started and boot completed!"
           npx wdio run wdio.conf.js
+
+      
+    - name: Check WDIO result
+      if: always()
+      run: |
+        echo "WDIO exit code: ${{ steps.emu.outputs.exit_code }}"
