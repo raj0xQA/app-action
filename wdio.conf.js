@@ -1,7 +1,5 @@
-import { sendEmail } from "./utils/sendEmail.js";
-import dotenv from "dotenv";
-dotenv.config();
 
+import 'dotenv/config';
 export const config = {
   runner: "local",
   specs: ["./test/app/**/*.js"],
@@ -12,9 +10,10 @@ export const config = {
   mochaOpts: {
     timeout: 120000,
   },
-  reporters: ["spec"],
+  reporterSyncTimeout: 30000,
+  reporters: ['spec',],
 
-  // Switch between services based on env
+
   services: [
     [
       "appium",
@@ -26,40 +25,42 @@ export const config = {
     ],
   ],
 
+  // capabilities: [{
+  //   // local
+  //   platformName: "Android",
+  //   "appium:deviceName": "Pixel_4_API_34",
+  //   "appium:udid": "emulator-5554",
+  //   "appium:platformVersion": "14",
+  //   "appium:automationName": "UiAutomator2",
+  //   "appium:app": process.env.LOCAL_APP,
+  //   "appium:autoGrantPermissions": true,
+  //   "appium:fullReset": true,
+  //   "appium:noReset": false,
+  // },
+  // ],
+
   capabilities: [{
     // local
     platformName: "Android",
-    "appium:deviceName": "Pixel_4_API_34",
+    'appium:browserName': 'Chrome',
+    // "appium:deviceName": "Pixel_4_API_34",
     "appium:udid": "emulator-5554",
     "appium:platformVersion": "14",
     "appium:automationName": "UiAutomator2",
-    "appium:app": process.env.LOCAL_APP,
+    // "appium:app": process.env.LOCAL_APP,
     "appium:autoGrantPermissions": true,
-    "appium:fullReset": true,
-    "appium:noReset": false,
+    "appium:skipDeviceInitialization": true,
+    "appium:skipServerInstallation": true,
+    "appium:fullReset": false,
+    "appium:noReset": true,
+    'goog:chromeOptions': {
+      args: [
+        '--user-agent=Mozilla/5.0 (Linux; Android 13; SM-S908U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.144 Mobile Safari/537.36'
+      ]
+    }
   },
   ],
 
   port: 4723,
 
-  // user: isBrowserStack ? process.env.BROWSERSTACK_USERNAME : undefined,
-  // key: isBrowserStack ? process.env.BROWSERSTACK_ACCESS_KEY : undefined,
-
-  // afterTest: async function (test, context, result) {
-  //   const { error, passed } = result;
-
-  //   // Check the flag, default to true if not defined
-  //   const shouldSendEmail = process.env.SEND_EMAIL !== "false";
-
-  //   if (!passed && shouldSendEmail) {
-  //     const subject = `❌ Push Notification Test Failed`;
-  //     const message = `Filed Flow : ${test.title}. Please investigate.`;
-  //     await sendEmail(subject, message);
-  //   }
-    // else {
-    //   const subject = `✅ Push Notification Test Passed`;
-    //   const message = `Flow : ${test.title} passed successfully.`;
-    //   await sendEmail(subject, message);
-    // }
-  // },
 };

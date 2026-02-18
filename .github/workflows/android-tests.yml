@@ -123,4 +123,4 @@ jobs:
     - name: Check WDIO result
       if: always()
       run: |
-        echo "WDIO exit code: ${{ steps.emu.outputs.exit_code }}"
+        echo "WDIO exit code: ${{ steps.emu.outcome }}"
