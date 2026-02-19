@@ -4,6 +4,7 @@ describe('Mobile browser search', () => {
   it('check element', async () => {
     await browser.pause(3000);
     const abc = await $('android=new UiSelector().text("My Currency Exchange")');
+    await browser.pause(10000)
     expect(await abc.isDisplayed()).toBe(true, "My Currency Exchange not found.");
   });
   

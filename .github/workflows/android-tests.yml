@@ -118,7 +118,7 @@ jobs:
           # force-avd-creation: true
           disable-animations: true
           disable-spellchecker: true
-          emulator-options: -no-window -no-snapshot-save -noaudio -no-boot-anim -gpu swiftshader_indirect  -camera-back none
+          emulator-options: -no-window -no-snapshot-save -noaudio -no-boot-anim -gpu swiftshader_indirect 
           script: |
             echo "Emulator started and boot completed!" 
             npm run test

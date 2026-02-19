@@ -68,7 +68,16 @@ export const config = {
   },
 
   beforeTest: async function (test, context) {
-    await browser.startRecordingScreen();
+    await browser.pause(500);
+    // await browser.startRecordingScreen();
+    await browser.startRecordingScreen({
+      videoType: 'h264',
+      videoQuality: 'high',     // high, medium, low
+      fps: 30,                  // Frames per second
+      bitRate: 10000000,        // 10 Mbps for very high quality
+      videoSize: '1920x1080',   // Full HD resolution
+      timeLimit: 600            // 10 minutes max
+    });
   },
 
   afterTest: async function (test, context, result) {
