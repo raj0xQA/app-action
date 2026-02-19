@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 
-const { SENDGRID_HOST, SENDGRID_PORT, SENDGRID_USER, SENDGRID_PASS } = process.env;
+const { SENDGRID_FROM, SENDGRID_HOST, SENDGRID_PORT, SENDGRID_USER, SENDGRID_PASS } = process.env;
 
 export async function sendEmail(subject, message) {
   const transporter = nodemailer.createTransport({
@@ -18,7 +18,7 @@ export async function sendEmail(subject, message) {
   ];
 
   const mailOptions = {
-    from: '"Push Notification Test Reporter" <raj@premio.io>',
+    from: `Push Notification Test Reporter <${SENDGRID_FROM}>`,
     to: recipients.join(","),
     subject: subject,
     text: message,

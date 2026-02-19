@@ -25,6 +25,7 @@ env:
   FORCE_COLOR: 1
   SHA: ${{ github.event.pull_request.head.sha }}
   LOCAL_APP: ./apk/bstack.apk
+  SENDGRID_FROM: ${{secrets.SENDGRID_FROM}}
   SENDGRID_HOST: ${{secrets.SENDGRID_HOST}}
   SENDGRID_PORT: ${{secrets.SENDGRID_PORT}}
   SENDGRID_USER: ${{secrets.SENDGRID_USER}}
