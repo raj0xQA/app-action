@@ -60,4 +60,9 @@ export const config = {
 
   port: 4723,
 
+
+  onPrepare: async function (config, capabilities, specs) {
+    fs.mkdirSync('./screencasts', { recursive: true });
+  },
+
 };

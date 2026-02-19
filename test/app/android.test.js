@@ -2,11 +2,13 @@
 describe('Mobile browser search', () => {
 
   it('check element', async () => {
+    await browser.startRecordingScreen();
     await browser.pause(1000);
     const abc = await $('android=new UiSelector().text("My Currency Exchange")');
     expect(await abc.isDisplayed()).toBe(true, "My Currency Exchange not found.");
-
+    await browser.saveRecordingScreen('./screencasts/video.mp4');
   });
+  
 
   // it('should open Google and search for WebdriverIO', async () => {
   // 1. Navigate to Google
