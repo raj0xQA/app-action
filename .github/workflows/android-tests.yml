@@ -101,9 +101,9 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 30
-          # target: google_apis
-          # arch: x86_64
-          # channel: stable
+          target: google_apis
+          arch: x86_64
+          channel: stable
           # avd-name: test-avd-34
           # profile: pixel_4
           # ram-size: 2048M
