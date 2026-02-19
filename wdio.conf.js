@@ -49,10 +49,10 @@ export const config = {
     "appium:automationName": "UiAutomator2",
     "appium:app": process.env.LOCAL_APP,
     "appium:autoGrantPermissions": true,
-    "appium:skipDeviceInitialization": true,
-    "appium:skipServerInstallation": true,
-    "appium:fullReset": false,
-    "appium:noReset": true,
+    // "appium:skipDeviceInitialization": true,
+    // "appium:skipServerInstallation": true,
+    // "appium:fullReset": false,
+    // "appium:noReset": true,
     // 'goog:chromeOptions': {
     //   args: [
     //     '--user-agent=Mozilla/5.0 (Linux; Android 13; SM-S908U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.144 Mobile Safari/537.36'
