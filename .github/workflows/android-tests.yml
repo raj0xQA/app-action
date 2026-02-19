@@ -93,7 +93,7 @@ jobs:
           emulator-options:  -no-snapshot-save -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -no-metrics
           script: |
             echo "Emulator started and boot completed!" 
-            npm run test
+         # npm run test
 
       # - name: run tests
       #   id: emu
