@@ -5,8 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "emulatoxr": "emulator -avd Pixel_API_30_ARM -no-snapshot -no-boot-anim -gpu swiftshader_indirect -memory 2048 -noaudio -no-boot-anim -writable-system",
-    "emulator": "emulator -avd Pixel_API_30_ARM -no-window",
+    "emulator30:headless": "emulator -avd Pixel_API_30_ARM -no-snapshot -no-boot-anim -noaudio -no-window ",
+    "emulator34": "emulator -avd Pixel_API_34_ARM -no-snapshot -no-boot-anim -noaudio",
+    "emulator30": "emulator -avd Pixel_API_30_ARM -no-snapshot -no-boot-anim -noaudio",
     "test": "npx wdio run wdio.conf.js"
   },
   "repository": {

@@ -24,7 +24,7 @@ permissions:
 env:
   FORCE_COLOR: 1
   SHA: ${{ github.event.pull_request.head.sha }}
-  LOCAL_APP: ./apk/bstack.apk
+  LOCAL_APP: ./apk/test.apk
   SENDGRID_FROM: ${{secrets.SENDGRID_FROM}}
   SENDGRID_HOST: ${{secrets.SENDGRID_HOST}}
   SENDGRID_PORT: ${{secrets.SENDGRID_PORT}}
@@ -44,7 +44,7 @@ jobs:
       - name: Use desired version of NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
 
       - name: Install Dependencies
@@ -105,7 +105,7 @@ jobs:
         id: emu
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 30
+          api-level: 34
           target: google_apis
           arch: x86_64
           channel: stable

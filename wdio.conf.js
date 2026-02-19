@@ -11,7 +11,16 @@ export const config = {
     timeout: 120000,
   },
   reporterSyncTimeout: 30000,
-  reporters: ['spec',],
+  reporters: [
+    [
+      "spec",
+      {
+        realtimeReporting: true,
+        color: true,
+        showPreface: false,
+      },
+    ],
+  ],
 
 
   services: [
@@ -25,19 +34,7 @@ export const config = {
     ],
   ],
 
-  // capabilities: [{
-  //   // local
-  //   platformName: "Android",
-  //   "appium:deviceName": "Pixel_4_API_34",
-  //   "appium:udid": "emulator-5554",
-  //   "appium:platformVersion": "14",
-  //   "appium:automationName": "UiAutomator2",
-  //   "appium:app": process.env.LOCAL_APP,
-  //   "appium:autoGrantPermissions": true,
-  //   "appium:fullReset": true,
-  //   "appium:noReset": false,
-  // },
-  // ],
+
 
   capabilities: [{
     // local
