@@ -110,6 +110,10 @@ jobs:
           target: google_atd
           arch: x86_64
           channel: stable
+          cores: 2
+          ram-size: 2048M
+          disk-size: 2048M
+          heap-size: 256M
           force-avd-creation: false
           disable-animations: true
           disable-spellchecker: true
