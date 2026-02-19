@@ -101,15 +101,15 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 30
-          # target: google_apis
-          # arch: x86_64
-          # channel: stable
+          target: google_apis
+          arch: x86_64
+          channel: stable
           # avd-name: test-avd-34
           # profile: pixel_4
           # ram-size: 2048M
           # heap-size: 512M
           # disk-size: 2048M
-          # force-avd-creation: true
+          force-avd-creation: true
           # force-avd-creation: false
           # disable-animations: true
           # disable-spellchecker: true
@@ -141,4 +141,9 @@ jobs:
         if: failure() && steps.emu.outcome == 'failure' && steps.emu.outputs.wdio_exit_code == ''
         run: |
           echo "Step failed due to emulator issues (not test failures)"
+
+      - name: Handle emulator failure
+        if: failure() && steps.emu.outcome == 'failure' && steps.emu.outputs.wdio_exit_code == '1'
+        run: |
+          echo "test failed(not test failures)"
 
