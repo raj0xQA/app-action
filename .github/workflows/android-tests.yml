@@ -121,7 +121,19 @@ jobs:
           # emulator-options: -no-snapshot-save -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back none -camera-front none -no-passive-gps -no-snapstorage -no-metrics
           emulator-options: -no-snapshot -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -no-metrics
           script: |
-            echo "Emulator started and boot completed!" && set +e && npx wdio run wdio.conf.js; EXIT_CODE=$?; set -e; echo "wdio_exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT; echo "WebdriverIO tests completed with exit code: $EXIT_CODE"; exit $EXIT_CODE
+            sh -c '
+              echo "Emulator started and boot completed!"
+              set +e
+              npx wdio run wdio.conf.js
+              EXIT_CODE=$?
+              set -e
+              echo "wdio_exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT
+              echo "WebdriverIO tests completed with exit code: $EXIT_CODE"
+              exit $EXIT_CODE
+            '
+
+          # script: |
+          #   echo "Emulator started and boot completed!" && set +e && npx wdio run wdio.conf.js; EXIT_CODE=$?; set -e; echo "wdio_exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT; echo "WebdriverIO tests completed with exit code: $EXIT_CODE"; exit $EXIT_CODE
 
           # echo "Emulator started and boot completed!"
           # set +e
@@ -132,16 +144,16 @@ jobs:
           # echo "WebdriverIO tests completed with exit code: $EXIT_CODE"
           # exit $EXIT_CODE
 
-      - name: Check WDIO result
-        if: always()
-        run: |
-          echo "WDIO exit code: ${{ steps.emu.outputs.wdio_exit_code}}"
-          echo "WDIO exit code: ${{ steps.emu.outcome }}"
+      # - name: Check WDIO result
+      #   if: always()
+      #   run: |
+      #     echo "WDIO exit code: ${{ steps.emu.outputs.wdio_exit_code}}"
+      #     echo "WDIO exit code: ${{ steps.emu.outcome }}"
 
-      - name: Send Email
-        if: failure() && steps.emu.outcome == 'failure' && steps.emu.outputs.wdio_exit_code == ''
-        run: |
-          node ./utils/sendAcionfailMail.js
+      # - name: Send Email
+      #   if: failure() && steps.emu.outcome == 'failure' && steps.emu.outputs.wdio_exit_code == ''
+      #   run: |
+      #     node ./utils/sendAcionfailMail.js
 
 
       # - name: Handle emulator failure
