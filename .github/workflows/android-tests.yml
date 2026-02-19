@@ -117,12 +117,10 @@ jobs:
           emulator-options: -no-snapshot -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -no-metrics
           script: |
             echo "Emulator started and boot completed!"
-
             set +e
             npx wdio run wdio.conf.js
             EXIT_CODE=$?
             set -e
-
             echo "wdio_exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT
             echo "WebdriverIO tests completed with exit code: $EXIT_CODE"
             exit $EXIT_CODE
