@@ -15,12 +15,6 @@ export async function sendEmail(subject, message) {
 
   const recipients = [
     "raj@premio.io",
-    // "prateek@premio.io",
-    // "gal@premio.io",
-    // "anoop@premio.io",
-    // "jaswinder@premio.io",
-    // "miraj@premio.io",
-    // "nibir@premio.io",
   ];
 
   const mailOptions = {
