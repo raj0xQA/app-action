@@ -72,7 +72,12 @@ export const config = {
   },
 
   afterTest: async function (test, context, result) {
-    await browser.saveRecordingScreen('./screencasts/video.mp4');
+    const safeTitle = test.title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const filename = `./screencasts/${safeTitle}_${timestamp}.mp4`;
+    await browser.pause(500);
+    await browser.saveRecordingScreen(filename);
+
   },
 
 };

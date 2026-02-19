@@ -115,10 +115,10 @@ jobs:
           target: google_atd
           arch: x86_64
           channel: stable
-          force-avd-creation: true
+          # force-avd-creation: true
           disable-animations: true
           disable-spellchecker: true
-          emulator-options: -no-window -no-snapshot-save -noaudio -no-boot-anim -gpu swiftshader_indirect
+          emulator-options: -no-window -no-snapshot-save -noaudio -no-boot-anim -gpu swiftshader_indirect  -camera-back none
           script: |
             echo "Emulator started and boot completed!" 
             npm run test
