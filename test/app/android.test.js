@@ -3,7 +3,7 @@ describe('Mobile browser search', () => {
 
   it('should open Google and search for WebdriverIO', async () => {
     // 1. Navigate to Google
-    await browser.url('https://www.google.com');
+    // await browser.url('https://www.google.com');
 
     expect(2+2).toEqual(5);
     // await browser.pause(1000);
