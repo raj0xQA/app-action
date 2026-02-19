@@ -57,27 +57,43 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      # - name: AVD cache
-      #   uses: actions/cache@v4
-      #   id: avd-cache
-      #   with:
-      #     path: |
-      #       ~/.android/avd/*
-      #       ~/.android/adb*
-      #     key: avd-cache-34
+      - name: AVD cache
+        uses: actions/cache@v4
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-cache-34
 
-      # - name: create AVD and generate snapshot for caching
-      #   if: steps.avd-cache.outputs.cache-hit != 'true'
-      #   uses: reactivecircus/android-emulator-runner@v2
-      #   with:
-      #     api-level: 34
-      #     target: google_atd
-      #     arch: x86_64
-      #     channel: stable
-      #     force-avd-creation: false
-      #     disable-animations: false
-      #     emulator-options: -no-window -noaudio -gpu swiftshader_indirect
-      #     script: echo "Generated AVD snapshot for caching."
+      - name: create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_atd
+          arch: x86_64
+          channel: stable
+          force-avd-creation: true
+          disable-animations: false
+          emulator-options: -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect
+          script: echo "Generated AVD snapshot for caching."
+
+      - name: run tests
+        id: emu2
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_atd
+          arch: x86_64
+          channel: stable
+          force-avd-creation: false
+          disable-animations: true
+          disable-spellchecker: true
+          emulator-options:  -no-snapshot-save -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -no-metrics
+          script: |
+            echo "Emulator started and boot completed!" 
+            npm run test
 
       # - name: run tests
       #   id: emu
@@ -102,25 +118,6 @@ jobs:
       #       echo "Emulator started and boot completed!" 
       #       npm run test
 
-      - name: run tests
-        id: emu2
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 34
-          target: google_atd
-          arch: x86_64
-          channel: stable
-          cores: 2
-          ram-size: 2048M
-          disk-size: 2048M
-          heap-size: 256M
-          force-avd-creation: false
-          disable-animations: true
-          disable-spellchecker: true
-          emulator-options: -no-window -no-snapshot-save -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back none -no-metrics
-          script: |
-            echo "Emulator started and boot completed!" 
-            npm run test
 
       # - name: Archive test artifacts (screenshots, HTML snapshots, Reports)
       #   if: always()
