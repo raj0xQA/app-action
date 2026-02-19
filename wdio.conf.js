@@ -68,23 +68,13 @@ export const config = {
   },
 
   beforeTest: async function (test, context) {
-    await browser.pause(500);
-    // await browser.startRecordingScreen();
-    await browser.startRecordingScreen({
-      videoType: 'h264',
-      videoQuality: 'high',     // high, medium, low
-      fps: 30,                  // Frames per second
-      bitRate: 10000000,        // 10 Mbps for very high quality
-      videoSize: '1920x1080',   // Full HD resolution
-      timeLimit: 600            // 10 minutes max
-    });
+    await browser.startRecordingScreen({});
   },
 
   afterTest: async function (test, context, result) {
     const safeTitle = test.title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
     const filename = `./screencasts/${safeTitle}_${timestamp}.mp4`;
-    await browser.pause(500);
     await browser.saveRecordingScreen(filename);
 
   },
