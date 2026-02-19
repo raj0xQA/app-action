@@ -45,7 +45,7 @@ export const config = {
     'appium:browserName': 'Chrome',
     // "appium:deviceName": "Pixel_4_API_34",
     "appium:udid": "emulator-5554",
-    "appium:platformVersion": "14",
+    // "appium:platformVersion": "14",
     "appium:automationName": "UiAutomator2",
     // "appium:app": process.env.LOCAL_APP,
     "appium:autoGrantPermissions": true,
