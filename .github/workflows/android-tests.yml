@@ -25,6 +25,10 @@ env:
   FORCE_COLOR: 1
   SHA: ${{ github.event.pull_request.head.sha }}
   LOCAL_APP: ./apk/bstack.apk
+  SENDGRID_HOST: ${{secrets.SENDGRID_HOST}}
+  SENDGRID_PORT: ${{secrets.SENDGRID_PORT}}
+  SENDGRID_USER: ${{secrets.SENDGRID_USER}}
+  SENDGRID_PASS: ${{secrets.SENDGRID_PASS}}
 
 jobs:
   test:
@@ -118,9 +122,6 @@ jobs:
           script: |
             echo "Emulator started and boot completed!" && set +e && npx wdio run wdio.conf.js; EXIT_CODE=$?; set -e; echo "wdio_exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT; echo "WebdriverIO tests completed with exit code: $EXIT_CODE"; exit $EXIT_CODE
 
-            
-
-
           # echo "Emulator started and boot completed!"
           # set +e
           # npx wdio run wdio.conf.js
@@ -136,14 +137,18 @@ jobs:
           echo "WDIO exit code: ${{ steps.emu.outputs.wdio_exit_code}}"
           echo "WDIO exit code: ${{ steps.emu.outcome }}"
 
-      
-      - name: Handle emulator failure
+      - name: Send Email
         if: failure() && steps.emu.outcome == 'failure' && steps.emu.outputs.wdio_exit_code == ''
         run: |
-          echo "Step failed due to emulator issues (not test failures)"
+          node sendAcionfailMail.js
 
-      - name: Handle emulator failure
-        if: failure() && steps.emu.outcome == 'failure' && steps.emu.outputs.wdio_exit_code == '1'
-        run: |
-          echo "test failed(not test failures)"
 
+      # - name: Handle emulator failure
+      #   if: failure() && steps.emu.outcome == 'failure' && steps.emu.outputs.wdio_exit_code == ''
+      #   run: |
+      #     echo "Step failed due to emulator issues (not test failures)"
+
+      # - name: Handle emulator failure
+      #   if: failure() && steps.emu.outcome == 'failure' && steps.emu.outputs.wdio_exit_code == '1'
+      #   run: |
+      #     echo "test failed(not test failures)"
