@@ -33,6 +33,7 @@
     "webdriverio": "^9.16.2"
   },
   "dependencies": {
+    "nodemailer": "^8.0.1",
     "npm-check-updates": "^19.4.0"
   }
 }
