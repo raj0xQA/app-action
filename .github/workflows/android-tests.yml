@@ -140,7 +140,7 @@ jobs:
       - name: Send Email
         if: failure() && steps.emu.outcome == 'failure' && steps.emu.outputs.wdio_exit_code == ''
         run: |
-          node sendAcionfailMail.js
+          node ./utils/sendAcionfailMail.js
 
 
       # - name: Handle emulator failure
