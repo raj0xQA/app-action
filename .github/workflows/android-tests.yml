@@ -66,18 +66,18 @@ jobs:
       #       ~/.android/adb*
       #     key: avd-cache-34
 
-      - name: create AVD and generate snapshot for caching
-        if: steps.avd-cache.outputs.cache-hit != 'true'
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 34
-          target: google_atd
-          arch: x86_64
-          channel: stable
-          force-avd-creation: false
-          disable-animations: false
-          emulator-options: -no-window -noaudio -gpu swiftshader_indirect
-          script: echo "Generated AVD snapshot for caching."
+      # - name: create AVD and generate snapshot for caching
+      #   if: steps.avd-cache.outputs.cache-hit != 'true'
+      #   uses: reactivecircus/android-emulator-runner@v2
+      #   with:
+      #     api-level: 34
+      #     target: google_atd
+      #     arch: x86_64
+      #     channel: stable
+      #     force-avd-creation: false
+      #     disable-animations: false
+      #     emulator-options: -no-window -noaudio -gpu swiftshader_indirect
+      #     script: echo "Generated AVD snapshot for caching."
 
       # - name: run tests
       #   id: emu
@@ -111,21 +111,22 @@ jobs:
           arch: x86_64
           channel: stable
           force-avd-creation: false
+          disable-animations: true
           disable-spellchecker: true
           emulator-options: -no-window -no-snapshot-save -noaudio -no-boot-anim -gpu swiftshader_indirect 
           script: |
             echo "Emulator started and boot completed!" 
             npm run test
 
-      - name: Archive test artifacts (screenshots, HTML snapshots, Reports)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-artifact
-          path: |
-            screencasts
-          if-no-files-found: ignore
-          retention-days: 1
+      # - name: Archive test artifacts (screenshots, HTML snapshots, Reports)
+      #   if: always()
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: test-artifact
+      #     path: |
+      #       screencasts
+      #     if-no-files-found: ignore
+      #     retention-days: 1
 
         # script: |
         # echo "Emulator started and boot completed!" && set +e && npx wdio run wdio.conf.js; EXIT_CODE=$?; set -e; echo "wdio_exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT; exit $EXIT_CODE
