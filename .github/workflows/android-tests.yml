@@ -144,11 +144,11 @@ jobs:
           # echo "WebdriverIO tests completed with exit code: $EXIT_CODE"
           # exit $EXIT_CODE
 
-      # - name: Check WDIO result
-      #   if: always()
-      #   run: |
-      #     echo "WDIO exit code: ${{ steps.emu.outputs.wdio_exit_code}}"
-      #     echo "WDIO exit code: ${{ steps.emu.outcome }}"
+      - name: Check WDIO result
+        if: always()
+        run: |
+          echo "WDIO exit code: ${{ steps.emu.outputs.wdio_exit_code}}"
+          echo "WDIO exit code: ${{ steps.emu.outcome }}"
 
       # - name: Send Email
       #   if: failure() && steps.emu.outcome == 'failure' && steps.emu.outputs.wdio_exit_code == ''
