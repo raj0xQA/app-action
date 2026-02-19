@@ -1,5 +1,7 @@
 
 import 'dotenv/config';
+import fs from 'fs';
+
 export const config = {
   runner: "local",
   specs: ["./test/app/**/*.js"],

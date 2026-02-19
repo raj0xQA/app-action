@@ -61,6 +61,7 @@ allure-report/
 appium.log
 webdriver.log
 screenshots/
+screencasts/
 errorShots/
 logs/
 trigger.txt

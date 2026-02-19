@@ -2,6 +2,7 @@
 describe('Mobile browser search', () => {
 
   it('check element', async () => {
+    // fs.mkdirSync('./screencasts', { recursive: true });
     await browser.startRecordingScreen();
     await browser.pause(1000);
     const abc = await $('android=new UiSelector().text("My Currency Exchange")');
