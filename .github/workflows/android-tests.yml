@@ -82,7 +82,7 @@ jobs:
           channel: stable
           force-avd-creation: true
           disable-animations: false
-          emulator-options: -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back none
+          emulator-options: -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect
           script: echo "Generated AVD snapshot for caching."
 
       - name: run tests
@@ -96,7 +96,7 @@ jobs:
           force-avd-creation: false
           disable-animations: true
           disable-spellchecker: true
-          emulator-options:  -no-snapshot-save -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -no-metrics
+          emulator-options:  -no-snapshot-save -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back none
           script: |
             echo "Emulator started and boot completed!" 
             npm run test
