@@ -31,5 +31,8 @@
     "chromedriver": "^138.0.1",
     "dotenv": "^17.2.4",
     "webdriverio": "^9.16.2"
+  },
+  "dependencies": {
+    "npm-check-updates": "^19.4.0"
   }
 }
