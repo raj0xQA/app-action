@@ -4,43 +4,45 @@ describe('Mobile browser search', () => {
   it('should open Google and search for WebdriverIO', async () => {
     // 1. Navigate to Google
     await browser.url('https://www.google.com');
-    await browser.pause(1000);
 
-    // 2. Accept cookies if the prompt appears (common on mobile)
-    try {
-      const agreeBtn = await $('button=Accept all');
-      if (await agreeBtn.isDisplayed()) {
-        await agreeBtn.click();
-      }
-    } catch {
-      // ignore if no cookie prompt
-    }
+    expect(2+2).toEqual(5);
+    // await browser.pause(1000);
 
-    // 3. Type search term into the search box
-    // const searchBox = await $('input[name="q"]');
-    const searchBox = await $('textarea[name="q"]');
+    // // 2. Accept cookies if the prompt appears (common on mobile)
+    // try {
+    //   const agreeBtn = await $('button=Accept all');
+    //   if (await agreeBtn.isDisplayed()) {
+    //     await agreeBtn.click();
+    //   }
+    // } catch {
+    //   // ignore if no cookie prompt
+    // }
 
-    await searchBox.setValue('WebdriverIO');
-    await browser.pause(1000);
+    // // 3. Type search term into the search box
+    // // const searchBox = await $('input[name="q"]');
+    // const searchBox = await $('textarea[name="q"]');
 
-    // 4. Press Enter on the keyboard
-    await browser.keys('Enter');
-    await browser.pause(1000);
+    // await searchBox.setValue('WebdriverIO');
+    // await browser.pause(1000);
 
-    // 5. Wait for the title to update with our search term
-    await browser.waitUntil(
-      async () => (await browser.getTitle()).includes('WebdriverIO'),
-      {
-        timeout: 10000,
-        timeoutMsg: 'Title never contained "WebdriverIO"',
-      }
-    );
+    // // 4. Press Enter on the keyboard
+    // await browser.keys('Enter');
+    // await browser.pause(1000);
 
-    // 6. Optional: take a screenshot for the report
-    await browser.saveScreenshot('./webdriverio-search-results.png');
+    // // 5. Wait for the title to update with our search term
+    // await browser.waitUntil(
+    //   async () => (await browser.getTitle()).includes('WebdriverIO'),
+    //   {
+    //     timeout: 10000,
+    //     timeoutMsg: 'Title never contained "WebdriverIO"',
+    //   }
+    // );
 
-    // 7. Simple assertion
-    expect(await browser.getTitle()).toContain('WebdriverIO');
+    // // 6. Optional: take a screenshot for the report
+    // await browser.saveScreenshot('./webdriverio-search-results.png');
+
+    // // 7. Simple assertion
+    // expect(await browser.getTitle()).toContain('WebdriverIO');
   });
 });
 
