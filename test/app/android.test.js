@@ -5,7 +5,7 @@ describe('Mobile browser search', () => {
     // 1. Navigate to Google
     // await browser.url('https://www.google.com');
 
-    expect(2+2).toEqual(4);
+    expect(2+2).toEqual(5);
     // await browser.pause(1000);
 
     // // 2. Accept cookies if the prompt appears (common on mobile)
