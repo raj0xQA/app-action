@@ -117,7 +117,6 @@ jobs:
           emulator-options: -no-snapshot -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -no-metrics
           script: |
             echo "Emulator started and boot completed!"
-            npx wdio run wdio.conf.js
 
             set +e
             npx wdio run wdio.conf.js
@@ -131,5 +130,5 @@ jobs:
       - name: Check WDIO result
         if: always()
         run: |
-          echo "WDIO exit code: ${{ steps.emu.outputs.wdio_exit_code }}"
+          echo "WDIO exit code: ${{ steps.emu.outputs.wdio_exit_code}}"
           echo "WDIO exit code: ${{ steps.emu.outcome }}"
