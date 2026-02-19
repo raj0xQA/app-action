@@ -84,25 +84,41 @@ jobs:
       #     emulator-options: -no-window -noaudio -gpu swiftshader_indirect
       #     script: echo "Generated AVD snapshot for caching."
 
+      # - name: run tests
+      #   id: emu
+      #   uses: reactivecircus/android-emulator-runner@v2
+      #   with:
+      #     api-level: 34
+      #     target: google_apis
+      #     arch: x86_64
+      #     channel: stable
+      #     # avd-name: test-avd-34
+      #     # profile: pixel_4
+      #     # ram-size: 2048M
+      #     # heap-size: 512M
+      #     # disk-size: 2048M
+      #     force-avd-creation: true
+      #     # force-avd-creation: false
+      #     disable-animations: true
+      #     disable-spellchecker: true
+      #     # emulator-options: -no-snapshot-save -no-window -noaudio -gpu swiftshader_indirect -no-metrics
+      #     emulator-options: -no-snapshot -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -no-metrics
+      #     script: |
+      #       echo "Emulator started and boot completed!" 
+      #       npm run test
+
       - name: run tests
-        id: emu
+        id: emu2
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 34
-          target: google_apis
+          target: google_atd
           arch: x86_64
           channel: stable
-          # avd-name: test-avd-34
-          # profile: pixel_4
-          # ram-size: 2048M
-          # heap-size: 512M
-          # disk-size: 2048M
           force-avd-creation: true
-          # force-avd-creation: false
           disable-animations: true
           disable-spellchecker: true
-          # emulator-options: -no-snapshot-save -no-window -noaudio -gpu swiftshader_indirect -no-metrics
-          emulator-options: -no-snapshot -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -no-metrics
+          emulator-options: -no-window -no-snapshot-save -noaudio -no-boot-anim -gpu swiftshader_indirect
           script: |
             echo "Emulator started and boot completed!" 
             npm run test
