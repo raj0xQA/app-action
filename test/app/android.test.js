@@ -2,12 +2,9 @@
 describe('Mobile browser search', () => {
 
   it('check element', async () => {
-    // fs.mkdirSync('./screencasts', { recursive: true });
-    await browser.startRecordingScreen();
-    await browser.pause(1000);
+    await browser.pause(3000);
     const abc = await $('android=new UiSelector().text("My Currency Exchange")');
     expect(await abc.isDisplayed()).toBe(true, "My Currency Exchange not found.");
-    await browser.saveRecordingScreen('./screencasts/video.mp4');
   });
   
 

@@ -67,4 +67,12 @@ export const config = {
     fs.mkdirSync('./screencasts', { recursive: true });
   },
 
+  beforeTest: async function (test, context) {
+    await browser.startRecordingScreen();
+  },
+
+  afterTest: async function (test, context, result) {
+    await browser.saveRecordingScreen('./screencasts/video.mp4');
+  },
+
 };
