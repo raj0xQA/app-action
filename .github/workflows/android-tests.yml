@@ -57,7 +57,6 @@ jobs:
       #     sudo udevadm control --reload-rules
       #     sudo udevadm trigger --name-match=kvm
 
-
       # - name: AVD cache
       #   uses: actions/cache@v4
       #   id: avd-cache
@@ -81,70 +80,77 @@ jobs:
       #     script: echo "Generated AVD snapshot for caching."
 
       - name: ❌ Force failure (test step)
+        id: forcefail
         run: exit 1
 
-      # - name: ❌ Force failure (test step)
-      #   if: always()
-      #   run: exit 1
       - name: ✅ Force success (test step)
+        id: forcesuccess
         run: exit 0
 
-      - name: run tests
-        id: emulator
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 34
-          target: google_atd
-          arch: x86_64
-          channel: stable
-          force-avd-creation: false
-          disable-animations: true
-          disable-spellchecker: true
-          emulator-options:  -no-snapshot-save -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back none
-          script: |
-            echo "Emulator started and boot completed!" && set +e && npm run test; EXIT_CODE=$?; set -e; echo "wdio_exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT; exit $EXIT_CODE
+      - name: ✅ app test
+        id: app
+        run: exit 0
 
       - name: ✉️ Send Email Notification on Failure
-        if: always() 
-        # ( always() && (failure() && !steps.emulator)) || (  always() &&  steps.emulator && steps.emulator.outcome == 'failure' && steps.emulator.outputs.wdio_exit_code == '1' )
+        id: emaild
+        if: failure() && steps.test.outcome != 'failure' && steps.test.outcome != 'skipped'
         run: |
-         echo "📧 Mail sent"
-         echo "emulator step present: ${{ steps.emulator != '' }}"
+          echo "📧 Mail sent"
 
+      # - name: run tests
+      #   id: emulator
+      #   uses: reactivecircus/android-emulator-runner@v2
+      #   with:
+      #     api-level: 34
+      #     target: google_atd
+      #     arch: x86_64
+      #     channel: stable
+      #     force-avd-creation: false
+      #     disable-animations: true
+      #     disable-spellchecker: true
+      #     emulator-options:  -no-snapshot-save -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back none
+      #     script: |
+      #       echo "Emulator started and boot completed!" && set +e && npm run test; EXIT_CODE=$?; set -e; echo "wdio_exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT; exit $EXIT_CODE
 
+      # - name: ✉️ Send Email Notification on Failure
+      #   if: always() && ((failure() && !steps.emulator))
+      #   id: emaild
+      #   run: |
+      #     echo "📧 Mail sent"
+      #     echo "emulator step present: ${{ steps.emulator != '' }}"
 
     # if: failure() && steps.emulator.outcome == 'failure' && steps.emulator.outputs.wdio_exit_code == ''
 
-      # - name: Archive test artifacts (screenshots, HTML snapshots, Reports)
-      #   if: always()
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: test-artifact
-      #     path: |
-      #       screencasts
-      #     if-no-files-found: ignore
-      #     retention-days: 1
+    # - name: Archive test artifacts (screenshots, HTML snapshots, Reports)
+    #   if: always()
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: test-artifact
+    #     path: |
+    #       screencasts
+    #     if-no-files-found: ignore
+    #     retention-days: 1
 
-        # script: |
-        # echo "Emulator started and boot completed!" && set +e && npx wdio run wdio.conf.js; EXIT_CODE=$?; set -e; echo "wdio_exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT; exit $EXIT_CODE
+    # script: |
+    # echo "Emulator started and boot completed!" && set +e && npx wdio run wdio.conf.js; EXIT_CODE=$?; set -e; echo "wdio_exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT; exit $EXIT_CODE
 
-      # - name: Check WDIO result
-      #   if: always()
-      #   run: |
-      #     echo "WDIO exit code: ${{ steps.emu.outputs.wdio_exit_code}}"
-      #     echo "WDIO exit code: ${{ steps.emu.outcome }}"
+    # - name: Check WDIO result
+    #   if: always()
+    #   run: |
+    #     echo "WDIO exit code: ${{ steps.emu.outputs.wdio_exit_code}}"
+    #     echo "WDIO exit code: ${{ steps.emu.outcome }}"
 
-      # - name: Send Email
-      #   if: failure() && steps.emu.outcome == 'failure' && steps.emu.outputs.wdio_exit_code == ''
-      #   run: |
-      #     node ./utils/sendAcionfailMail.js
+    # - name: Send Email
+    #   if: failure() && steps.emu.outcome == 'failure' && steps.emu.outputs.wdio_exit_code == ''
+    #   run: |
+    #     node ./utils/sendAcionfailMail.js
 
-      # - name: Handle emulator failure
-      #   if: failure() && steps.emu.outcome == 'failure' && steps.emu.outputs.wdio_exit_code == ''
-      #   run: |
-      #     echo "Step failed due to emulator issues (not test failures)"
+    # - name: Handle emulator failure
+    #   if: failure() && steps.emu.outcome == 'failure' && steps.emu.outputs.wdio_exit_code == ''
+    #   run: |
+    #     echo "Step failed due to emulator issues (not test failures)"
 
-      # - name: Handle emulator failure
-      #   if: failure() && steps.emu.outcome == 'failure' && steps.emu.outputs.wdio_exit_code == '1'
-      #   run: |
-      #     echo "test failed(not test failures)"
+    # - name: Handle emulator failure
+    #   if: failure() && steps.emu.outcome == 'failure' && steps.emu.outputs.wdio_exit_code == '1'
+    #   run: |
+    #     echo "test failed(not test failures)"
