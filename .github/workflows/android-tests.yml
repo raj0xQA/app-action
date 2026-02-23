@@ -39,26 +39,26 @@ jobs:
     timeout-minutes: 20
 
     steps:
-      - name: Checkout testing repo
-        uses: actions/checkout@v4
+      # - name: Checkout testing repo
+      #   uses: actions/checkout@v4
 
-      - name: Use desired version of NodeJS
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: npm
+      # - name: Use desired version of NodeJS
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 24
+      #     cache: npm
 
       - name: ⬇️ Download Test APK
-        continue-on-error: true
+        # continue-on-error: true
         run: |
-          gh release download v1.0.0 \
+          gh release download 1.0.0 \
           --repo raj0xQA/app-action \
           --pattern "bstack.apk" \
           --dir "apk" \
           --clobber
 
       - name: Verify APK existence
-        continue-on-error: true
+        # continue-on-error: true
         run: |
           if [ -f "apk/chatway.apk" ]; then
             echo "✅ APK found! Proceeding..."
