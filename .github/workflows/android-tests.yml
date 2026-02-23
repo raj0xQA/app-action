@@ -51,7 +51,7 @@ jobs:
         continue-on-error: true
         run: |
           mkdir -p apk
-          cd mkdir
+          cd apk
           gh release download v1.0.0
 
         # gh release download --repo raj0xQA/app-action \
@@ -83,6 +83,13 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./allure-report
 
+
+
+
+
+
+
+          
       # - name: Enable KVM
       #   run: |
       #     echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -111,20 +118,20 @@ jobs:
       #     emulator-options: -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect
       #     script: echo "Generated AVD snapshot for caching."
 
-      - name: run tests
-        id: emulator
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          # target: google_atd
-          # arch: x86_64
-          # channel: stable
-          # force-avd-creation: false
-          # disable-animations: true
-          # disable-spellchecker: true
-          emulator-options: -no-snapshot-save -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back none
-          script: |
-            echo "Emulator started and boot completed!" && set +e && true; EXIT_CODE=$?; set -e; echo "wdio_exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT; exit $EXIT_CODE
+      # - name: run tests
+      #   id: emulator
+      #   uses: reactivecircus/android-emulator-runner@v2
+      #   with:
+      #     api-level: 29
+      #     # target: google_atd
+      #     # arch: x86_64
+      #     # channel: stable
+      #     # force-avd-creation: false
+      #     # disable-animations: true
+      #     # disable-spellchecker: true
+      #     emulator-options: -no-snapshot-save -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back none
+      #     script: |
+      #       echo "Emulator started and boot completed!" && set +e && true; EXIT_CODE=$?; set -e; echo "wdio_exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT; exit $EXIT_CODE
 
 
     #   - name: ✉️ Send Email Notification on Failure
