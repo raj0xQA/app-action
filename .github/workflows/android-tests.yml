@@ -60,11 +60,11 @@ jobs:
       - name: Verify APK existence
         # continue-on-error: true
         run: |
-          if [ -f "apk/bstack.apk" ]; then
+          if [ -f "apk/bstack2.apk" ]; then
             echo "✅ APK found! Proceeding..."
-            ls -lh apk/bstack.apk
+            ls -lh apk/bstack2.apk
           else
-            echo "❌ Error: APK not found at apk/bstack.apk"
+            echo "❌ Error: APK not found at apk/bstack2.apk"
             exit 1
           fi
 
