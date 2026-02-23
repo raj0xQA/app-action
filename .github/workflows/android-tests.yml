@@ -93,7 +93,7 @@ jobs:
 
       - name: ✉️ Send Email Notification on Failure
         id: emaild
-        if: failure() && steps.test.outcome != 'failure' && steps.test.outcome != 'skipped'
+        if: always() && failure() && steps.test.outcome != 'failure' && steps.test.outcome != 'skipped'
         run: |
           echo "📧 Mail sent"
 
