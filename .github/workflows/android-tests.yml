@@ -38,54 +38,54 @@ jobs:
     timeout-minutes: 20
 
     steps:
-      - name: Checkout testing repo
-        uses: actions/checkout@v4
+      # - name: Checkout testing repo
+      #   uses: actions/checkout@v4
 
-      - name: Use desired version of NodeJS
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: npm
+      # - name: Use desired version of NodeJS
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 24
+      #     cache: npm
 
-      - name: Install Dependencies
-        run: |
-          npm ci || npm i
+      # - name: Install Dependencies
+      #   run: |
+      #     npm ci || npm i
 
-      - name: Enable KVM
-        run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
+      # - name: Enable KVM
+      #   run: |
+      #     echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+      #     sudo udevadm control --reload-rules
+      #     sudo udevadm trigger --name-match=kvm
 
-      - name: Verify Android SDK Path
-        run: |
-          echo "The SDK Root is: $ANDROID_SDK_ROOT"
-          echo "The Android Home is: $ANDROID_HOME"
 
-      - name: AVD cache
-        uses: actions/cache@v4
-        id: avd-cache
-        with:
-          path: |
-            ~/.android/avd/*
-            ~/.android/adb*
-          key: avd-cache-34
+      # - name: AVD cache
+      #   uses: actions/cache@v4
+      #   id: avd-cache
+      #   with:
+      #     path: |
+      #       ~/.android/avd/*
+      #       ~/.android/adb*
+      #     key: avd-cache-34
 
-      - name: create AVD and generate snapshot for caching
-        if: steps.avd-cache.outputs.cache-hit != 'true'
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 34
-          target: google_atd
-          arch: x86_64
-          channel: stable
-          force-avd-creation: true
-          disable-animations: false
-          emulator-options: -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect
-          script: echo "Generated AVD snapshot for caching."
+      # - name: create AVD and generate snapshot for caching
+      #   if: steps.avd-cache.outputs.cache-hit != 'true'
+      #   uses: reactivecircus/android-emulator-runner@v2
+      #   with:
+      #     api-level: 34
+      #     target: google_atd
+      #     arch: x86_64
+      #     channel: stable
+      #     force-avd-creation: true
+      #     disable-animations: false
+      #     emulator-options: -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect
+      #     script: echo "Generated AVD snapshot for caching."
 
+      - name: ❌ Force failure (test step)
+        run: exit 1
+      - name: ✅ Force success (test step)
+        run: exit 0
       - name: run tests
-        id: emu2
+        id: emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 34
@@ -97,32 +97,17 @@ jobs:
           disable-spellchecker: true
           emulator-options:  -no-snapshot-save -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back none
           script: |
-            echo "Emulator started and boot completed!" 
-            npm run test
+            echo "Emulator started and boot completed!" && set +e && npm run test; EXIT_CODE=$?; set -e; echo "wdio_exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT; exit $EXIT_CODE
 
-      # - name: run tests
-      #   id: emu
-      #   uses: reactivecircus/android-emulator-runner@v2
-      #   with:
-      #     api-level: 34
-      #     target: google_apis
-      #     arch: x86_64
-      #     channel: stable
-      #     # avd-name: test-avd-34
-      #     # profile: pixel_4
-      #     # ram-size: 2048M
-      #     # heap-size: 512M
-      #     # disk-size: 2048M
-      #     force-avd-creation: true
-      #     # force-avd-creation: false
-      #     disable-animations: true
-      #     disable-spellchecker: true
-      #     # emulator-options: -no-snapshot-save -no-window -noaudio -gpu swiftshader_indirect -no-metrics
-      #     emulator-options: -no-snapshot -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -no-metrics
-      #     script: |
-      #       echo "Emulator started and boot completed!"   
-      #       npm run test
+      - name: ✉️ Send Email Notification on Emulator Failure
+        if: (failure() && !steps.emulator) || (steps.emulator && steps.emulator.outcome == 'failure' && steps.emulator.outputs.exit_code == '1')
+        run: |
+          echo "Mail sent"
+          echo "emulator step present: ${{ steps.emulator }}"
 
+
+
+    # if: failure() && steps.emulator.outcome == 'failure' && steps.emulator.outputs.wdio_exit_code == ''
 
       # - name: Archive test artifacts (screenshots, HTML snapshots, Reports)
       #   if: always()
