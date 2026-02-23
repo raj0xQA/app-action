@@ -105,7 +105,8 @@ jobs:
             echo "Emulator started and boot completed!" && set +e && npm run test; EXIT_CODE=$?; set -e; echo "wdio_exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT; exit $EXIT_CODE
 
       - name: ✉️ Send Email Notification on Failure
-        if: ( always() && (failure() && !steps.emulator)) || (  always() &&  steps.emulator && steps.emulator.outcome == 'failure' && steps.emulator.outputs.wdio_exit_code == '1' )
+        if: always() 
+        # ( always() && (failure() && !steps.emulator)) || (  always() &&  steps.emulator && steps.emulator.outcome == 'failure' && steps.emulator.outputs.wdio_exit_code == '1' )
         run: |
          echo "📧 Mail sent"
          echo "emulator step present: ${{ steps.emulator != '' }}"
