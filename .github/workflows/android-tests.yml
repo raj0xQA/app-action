@@ -69,7 +69,6 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-            ${{ env.ANDROID_SDK_ROOT }}/system-images/android-34/google_atd/x86_64/*
           key: avd-cache-34
 
       - name: create AVD and generate snapshot for caching
