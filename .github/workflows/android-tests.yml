@@ -52,7 +52,7 @@ jobs:
           npm ci || npm i
       - name: Run tests
         run: |
-          npm run tests
+          npm run test
 
       - name: 📊 Generate Test report
         run: |
