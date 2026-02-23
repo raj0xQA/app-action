@@ -50,11 +50,14 @@ jobs:
       - name: ⬇️ Download Test APK
         continue-on-error: true
         run: |
-          gh release download --repo raj0xQA/app-action \
-          --latest \
-          --pattern "bstack-*.apk" \
-          --output "apk/bstack.apk" \
-          --clobber
+          mkdir -p apk
+          cd mkdir
+          gh release download v1.0.0
+
+        # gh release download --repo raj0xQA/app-action \
+        # --pattern "bstack-*.apk" \
+        # --output "apk/bstack.apk" \
+        # --clobber
 
       - name: ⬇️ Check Downloaded Test APK
         continue-on-error: true
@@ -71,6 +74,7 @@ jobs:
       - name: 📊 Generate Test report
         run: |
           npm run report:generate
+          ls -lh allure-report
 
       - name: 🚀 Deploy Allure Report to GitHub Pages
         if: always()

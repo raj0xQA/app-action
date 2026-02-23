@@ -32,8 +32,19 @@ export const config = {
   capabilities: [
     {
       browserName: "chrome",
+      "goog:chromeOptions": {
+        args: [
+          "--no-sandbox",
+          "--disable-dev-shm-usage",
+          "--headless",
+          "--disable-gpu",
+          "--window-size=1920,1080",
+        ],
+      },
     },
   ],
+
+  services: ["chromedriver"],
 
   // services: [
   //   [
