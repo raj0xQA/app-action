@@ -79,18 +79,18 @@ jobs:
       #     emulator-options: -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect
       #     script: echo "Generated AVD snapshot for caching."
 
-      - name: ❌ Force failure (test step)
-        id: forcefail
-        run: exit 1
+      # - name: ❌ Force failure (test step)
+      #   id: forcefail
+      #   run: exit 1
 
       - name: run tests
         id: emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 34
-          target: google_atd
-          arch: x86_64
-          channel: stable
+          # target: google_atd
+          # arch: x86_64
+          # channel: stable
           force-avd-creation: false
           disable-animations: true
           disable-spellchecker: true
