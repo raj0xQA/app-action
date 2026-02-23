@@ -1,159 +1,143 @@
-name: Android App Automation
+name: Test Failure Notification Logic
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
   workflow_dispatch:
-
-    # Cancels all previous workflow runs for pull requests that have not completed.
-concurrency:
-  # The concurrency group contains the workflow name and the branch name for pull requests or the commit hash for any other events.
-  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.sha }}
-  cancel-in-progress: true
-
-# workflow permissions
-permissions:
-  checks: write
-  contents: write
-  issues: write
-  pull-requests: write
-
-# workflow environment variables
-env:
-  FORCE_COLOR: 1
-  SHA: ${{ github.event.pull_request.head.sha }}
-  LOCAL_APP: ./apk/test.apk
-  SENDGRID_FROM: ${{secrets.SENDGRID_FROM}}
-  SENDGRID_HOST: ${{secrets.SENDGRID_HOST}}
-  SENDGRID_PORT: ${{secrets.SENDGRID_PORT}}
-  SENDGRID_USER: ${{secrets.SENDGRID_USER}}
-  SENDGRID_PASS: ${{secrets.SENDGRID_PASS}}
+    inputs:
+      step1_status:
+        description: 'Step 1 status (success/failure)'
+        required: true
+        default: 'success'
+        type: choice
+        options:
+          - success
+          - failure
+      step2_status:
+        description: 'Step 2 status (success/failure)'
+        required: true
+        default: 'success'
+        type: choice
+        options:
+          - success
+          - failure
+      step3_cmd1_status:
+        description: 'Step 3 Command 1 status (success/failure)'
+        required: true
+        default: 'failure'
+        type: choice
+        options:
+          - success
+          - failure
+      step3_cmd2_status:
+        description: 'Step 3 Command 2 status (success/failure)'
+        required: true
+        default: 'success'
+        type: choice
+        options:
+          - success
+          - failure
 
 jobs:
-  test:
-    name: app test
+  test-failure-logic:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-
     steps:
-      - name: Checkout testing repo
-        uses: actions/checkout@v4
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
 
-      - name: Use desired version of NodeJS
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: npm
-
-      - name: Install Dependencies
+      - name: 🔧 Step 1 - Demo Step
+        id: step1
         run: |
-          npm ci || npm i
+          echo "Running Step 1..."
+          if [ "${{ github.event.inputs.step1_status }}" == "failure" ]; then
+            echo "❌ Step 1 failing as requested"
+            exit 1
+          else
+            echo "✅ Step 1 passing"
+            exit 0
+          fi
 
-      - name: Enable KVM
+      - name: 🔧 Step 2 - Demo Step (Can be controlled to fail)
+        id: step2
         run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
+          echo "Running Step 2..."
+          if [ "${{ github.event.inputs.step2_status }}" == "failure" ]; then
+            echo "❌ Step 2 failing as requested"
+            exit 1
+          else
+            echo "✅ Step 2 passing"
+            exit 0
+          fi
 
-      - name: Verify Android SDK Path
+      - name: 🔧 Step 3 - Multi-command Step (Simulates Emulator)
+        id: step3
         run: |
-          echo "The SDK Root is: $ANDROID_SDK_ROOT"
-          echo "The Android Home is: $ANDROID_HOME"
+          echo "Running Command 1..."
+          if [ "${{ github.event.inputs.step3_cmd1_status }}" == "failure" ]; then
+            echo "❌ Command 1 failed"
+            CMD1_EXIT=1
+          else
+            echo "✅ Command 1 passed"
+            CMD1_EXIT=0
+          fi
+          
+          echo "Running Command 2..."
+          if [ "${{ github.event.inputs.step3_cmd2_status }}" == "failure" ]; then
+            echo "❌ Command 2 failed"
+            CMD2_EXIT=1
+          else
+            echo "✅ Command 2 passed"
+            CMD2_EXIT=0
+          fi
+          
+          # Simulate the logic from your emulator step
+          set +e
+          # This simulates running tests and capturing exit code
+          EXIT_CODE=$((CMD1_EXIT || CMD2_EXIT))
+          set -e
+          
+          echo "Combined exit code: $EXIT_CODE"
+          echo "exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT
+          
+          # Exit with the combined code
+          exit $EXIT_CODE
 
-      - name: AVD cache
-        uses: actions/cache@v4
-        id: avd-cache
-        with:
-          path: |
-            ~/.android/avd/*
-            ~/.android/adb*
-          key: avd-cache-34
+      - name: 📧 Step 4 - Email Notification with Logic
+        if: |
+          failure() && (
+            steps.step3.outcome == 'skipped' || 
+            (steps.step3.outcome == 'failure' && steps.step3.outputs.exit_code == '') 
+          )
+        run: |
+          echo "📧 EMAIL TRIGGERED!"
+          echo "Current context:"
+          echo "  - Workflow status: failure"
+          echo "  - Step 3 outcome: ${{ steps.step3.outcome }}"
+          echo "  - Step 3 exit_code output: '${{ steps.step3.outputs.exit_code }}'"
+          
+          if [ "${{ steps.step3.outcome }}" == "skipped" ]; then
+            echo "📧 Logic executed: Previous step (Step 1 or 2) failed, so Step 3 was skipped"
+            echo "📧 Would send email for previous step failure"
+          elif [ "${{ steps.step3.outcome }}" == "failure" ] && [ -z "${{ steps.step3.outputs.exit_code }}" ]; then
+            echo "📧 Logic executed: Step 3 failed with EMPTY exit code (simulating emulator failure)"
+            echo "📧 Would send email for emulator failure"
+          fi
+          
+          # Simulate sending email
+          # node ./utils/send-action-fail-mail.js
 
-      - name: create AVD and generate snapshot for caching
-        if: steps.avd-cache.outputs.cache-hit != 'true'
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 34
-          target: google_atd
-          arch: x86_64
-          channel: stable
-          force-avd-creation: true
-          disable-animations: false
-          emulator-options: -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect
-          script: echo "Generated AVD snapshot for caching."
-
-      - name: run tests
-        id: emu2
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 34
-          target: google_atd
-          arch: x86_64
-          channel: stable
-          force-avd-creation: false
-          disable-animations: true
-          disable-spellchecker: true
-          emulator-options:  -no-snapshot-save -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back none
-          script: |
-            echo "Emulator started and boot completed!" 
-            npm run test
-
-      # - name: run tests
-      #   id: emu
-      #   uses: reactivecircus/android-emulator-runner@v2
-      #   with:
-      #     api-level: 34
-      #     target: google_apis
-      #     arch: x86_64
-      #     channel: stable
-      #     # avd-name: test-avd-34
-      #     # profile: pixel_4
-      #     # ram-size: 2048M
-      #     # heap-size: 512M
-      #     # disk-size: 2048M
-      #     force-avd-creation: true
-      #     # force-avd-creation: false
-      #     disable-animations: true
-      #     disable-spellchecker: true
-      #     # emulator-options: -no-snapshot-save -no-window -noaudio -gpu swiftshader_indirect -no-metrics
-      #     emulator-options: -no-snapshot -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -no-metrics
-      #     script: |
-      #       echo "Emulator started and boot completed!"   
-      #       npm run test
-
-
-      # - name: Archive test artifacts (screenshots, HTML snapshots, Reports)
-      #   if: always()
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: test-artifact
-      #     path: |
-      #       screencasts
-      #     if-no-files-found: ignore
-      #     retention-days: 1
-
-        # script: |
-        # echo "Emulator started and boot completed!" && set +e && npx wdio run wdio.conf.js; EXIT_CODE=$?; set -e; echo "wdio_exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT; exit $EXIT_CODE
-
-      # - name: Check WDIO result
-      #   if: always()
-      #   run: |
-      #     echo "WDIO exit code: ${{ steps.emu.outputs.wdio_exit_code}}"
-      #     echo "WDIO exit code: ${{ steps.emu.outcome }}"
-
-      # - name: Send Email
-      #   if: failure() && steps.emu.outcome == 'failure' && steps.emu.outputs.wdio_exit_code == ''
-      #   run: |
-      #     node ./utils/sendAcionfailMail.js
-
-      # - name: Handle emulator failure
-      #   if: failure() && steps.emu.outcome == 'failure' && steps.emu.outputs.wdio_exit_code == ''
-      #   run: |
-      #     echo "Step failed due to emulator issues (not test failures)"
-
-      # - name: Handle emulator failure
-      #   if: failure() && steps.emu.outcome == 'failure' && steps.emu.outputs.wdio_exit_code == '1'
-      #   run: |
-      #     echo "test failed(not test failures)"
+      - name: 📊 Step 5 - Debug Information (Always runs)
+        if: always()
+        run: |
+          echo "🔍 DEBUG INFORMATION:"
+          echo "======================"
+          echo "Step 1 status: ${{ steps.step1.outcome }}"
+          echo "Step 2 status: ${{ steps.step2.outcome }}"
+          echo "Step 3 status: ${{ steps.step3.outcome }}"
+          echo "Step 3 exit_code output: '${{ steps.step3.outputs.exit_code }}'"
+          echo ""
+          echo "Overall job status: ${{ job.status }}"
+          echo ""
+          echo "Would email trigger? Let's check conditions:"
+          echo "  failure(): ${{ failure() }}"
+          echo "  steps.step3.outcome == 'skipped': ${{ steps.step3.outcome == 'skipped' }}"
+          echo "  steps.step3.outcome == 'failure': ${{ steps.step3.outcome == 'failure' }}"
+          echo "  steps.step3.outputs.exit_code == '': ${{ steps.step3.outputs.exit_code == '' }}"
