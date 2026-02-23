@@ -87,7 +87,7 @@ jobs:
         id: emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 29
+          api-level: 34
           # target: google_atd
           # arch: x86_64
           # channel: stable
