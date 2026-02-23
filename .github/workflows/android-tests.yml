@@ -22,14 +22,14 @@ permissions:
 
 # workflow environment variables
 env:
-  FORCE_COLOR: 1
-  SHA: ${{ github.event.pull_request.head.sha }}
-  LOCAL_APP: ./apk/test.apk
-  SENDGRID_FROM: ${{secrets.SENDGRID_FROM}}
-  SENDGRID_HOST: ${{secrets.SENDGRID_HOST}}
-  SENDGRID_PORT: ${{secrets.SENDGRID_PORT}}
-  SENDGRID_USER: ${{secrets.SENDGRID_USER}}
-  SENDGRID_PASS: ${{secrets.SENDGRID_PASS}}
+  # FORCE_COLOR: 1
+  # SHA: ${{ github.event.pull_request.head.sha }}
+  # LOCAL_APP: ./apk/test.apk
+  # SENDGRID_FROM: ${{secrets.SENDGRID_FROM}}
+  # SENDGRID_HOST: ${{secrets.SENDGRID_HOST}}
+  # SENDGRID_PORT: ${{secrets.SENDGRID_PORT}}
+  # SENDGRID_USER: ${{secrets.SENDGRID_USER}}
+  # SENDGRID_PASS: ${{secrets.SENDGRID_PASS}}
   GITHUB_TOKEN: ${{ secrets.GT_TOKEN }}
 
 jobs:
@@ -60,11 +60,11 @@ jobs:
       - name: Verify APK existence
         # continue-on-error: true
         run: |
-          if [ -f "apk/chatway.apk" ]; then
+          if [ -f "apk/bstack.apk" ]; then
             echo "✅ APK found! Proceeding..."
-            ls -lh apk/chatway.apk
+            ls -lh apk/bstack.apk
           else
-            echo "❌ Error: APK not found at apk/chatway.apk"
+            echo "❌ Error: APK not found at apk/bstack.apk"
             exit 1
           fi
 
