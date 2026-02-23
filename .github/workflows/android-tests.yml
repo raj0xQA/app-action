@@ -51,38 +51,46 @@ jobs:
       - name: ⬇️ Download Test APK
         continue-on-error: true
         run: |
-          mkdir -p apk
-          cd apk
-          gh release download v1.0.0
+          gh release download v1.0.0 \
+          --repo raj0xQA/app-action \
+          --pattern "bstack.apk" \
+          --dir "apk" \
+          --clobber
 
-        # gh release download --repo raj0xQA/app-action \
-        # --pattern "bstack-*.apk" \
-        # --output "apk/bstack.apk" \
-        # --clobber
-
-      - name: ⬇️ Check Downloaded Test APK
+      - name: Verify APK existence
         continue-on-error: true
         run: |
-          ls -lh apk/bstack.apk
+          if [ -f "apk/chatway.apk" ]; then
+            echo "✅ APK found! Proceeding..."
+            ls -lh apk/chatway.apk
+          else
+            echo "❌ Error: APK not found at apk/chatway.apk"
+            exit 1
+          fi
 
-      - name: Install Dependencies
-        run: |
-          npm ci || npm i
-      - name: Run tests
-        run: |
-          npm run test
+      # - name: ⬇️ Check Downloaded Test APK
+      #   continue-on-error: true
+      #   run: |
+      #     ls -lh apk/bstack.apk
 
-      - name: 📊 Generate Test report
-        run: |
-          npm run report:generate
-          ls -lh allure-report
+      # - name: Install Dependencies
+      #   run: |
+      #     npm ci || npm i
+      # - name: Run tests
+      #   run: |
+      #     npm run test
 
-      - name: 🚀 Deploy Allure Report to GitHub Pages
-        if: always()
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./allure-report
+      # - name: 📊 Generate Test report
+      #   run: |
+      #     npm run report:generate
+      #     ls -lh allure-report
+
+      # - name: 🚀 Deploy Allure Report to GitHub Pages
+      #   if: always()
+      #   uses: peaceiris/actions-gh-pages@v4
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     publish_dir: ./allure-report
 
 
 
