@@ -51,9 +51,9 @@ jobs:
       - name: ⬇️ Download Test APK
         # continue-on-error: true
         run: |
-          gh release download 1.0.0 \
+          gh release download \
           --repo raj0xQA/app-action \
-          --pattern "bstack.apk" \
+          --pattern "bstack*.apk" \
           --dir "apk" \
           --clobber
 
