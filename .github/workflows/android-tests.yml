@@ -83,47 +83,36 @@ jobs:
         id: forcefail
         run: exit 1
 
-      - name: ✅ Force success (test step)
-        id: forcesuccess
-        run: exit 0
-
-      - name: ✅ app test
-        id: test
-        run: exit 0
+      - name: run tests
+        id: emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_atd
+          arch: x86_64
+          channel: stable
+          force-avd-creation: false
+          disable-animations: true
+          disable-spellchecker: true
+          emulator-options: -no-snapshot-save -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back none
+          script: |
+            echo "Emulator started and boot completed!" && set +e && false; EXIT_CODE=$?; set -e; echo "wdio_exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT; exit $EXIT_CODE
 
       - name: Simple Log
         if: always()
-        run: echo "steps.test.outcome = ${{ steps.test.outcome }}"
+        run: echo "steps.emulator.outcome = ${{ steps.emulator.outcome }}"
 
       - name: ✉️ Send Email Notification on Failure
+        if: always() && failure() &&  (steps.emulator.outcome == 'skipped') || (steps.emulator.outcome == 'failure' && steps.emulator.outputs.wdio_exit_code == '')
         id: emaild
-        if: always() && failure() && steps.test.outcome == 'skipped'
         run: |
           echo "📧 Mail sent"
+          echo "steps.emulator.outcome = ${{ steps.emulator.outcome }}"
+          echo "steps.emulator.outcome.outputs = ${{ steps.emulator.outcome.outputs }}"
 
-      # - name: run tests
-      #   id: emulator
-      #   uses: reactivecircus/android-emulator-runner@v2
-      #   with:
-      #     api-level: 34
-      #     target: google_atd
-      #     arch: x86_64
-      #     channel: stable
-      #     force-avd-creation: false
-      #     disable-animations: true
-      #     disable-spellchecker: true
-      #     emulator-options:  -no-snapshot-save -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back none
-      #     script: |
-      #       echo "Emulator started and boot completed!" && set +e && npm run test; EXIT_CODE=$?; set -e; echo "wdio_exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT; exit $EXIT_CODE
 
-      # - name: ✉️ Send Email Notification on Failure
-      #   if: always() && ((failure() && !steps.emulator))
-      #   id: emaild
-      #   run: |
-      #     echo "📧 Mail sent"
-      #     echo "emulator step present: ${{ steps.emulator != '' }}"
 
-    # if: failure() && steps.emulator.outcome == 'failure' && steps.emulator.outputs.wdio_exit_code == ''
+    # if: failure() && steps.emulator.outcome == 'failure' || steps.emulator.outcome == 'failure' && steps.emulator.outputs.wdio_exit_code == ''
 
     # - name: Archive test artifacts (screenshots, HTML snapshots, Reports)
     #   if: always()
