@@ -5,10 +5,20 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "emulator30:headless": "emulator -avd Pixel_API_30_ARM -no-snapshot -no-boot-anim -noaudio -no-window ",
-    "emulator34": "emulator -avd Pixel_API_34_ARM -no-snapshot -no-boot-anim -noaudio",
+    "emulator30:headless": "emulator -avd Pixel_API_30_ARM -no-snapshot -no-boot-anim -noaudio -no-window",
     "emulator30": "emulator -avd Pixel_API_30_ARM -no-snapshot -no-boot-anim -noaudio",
-    "test": "npx wdio run wdio.conf.js"
+    "emulator34": "emulator -avd Pixel_API_34_ARM -no-snapshot -no-boot-anim -noaudio",
+    "report:generate": "npx allure generate allure-results",
+    "report:open": "npx allure open",
+    "report:serve": "npx allure serve allure-results",
+    "test:report": "npm run test && npm run report:serve",
+    "test": "npx wdio run wdio.conf.js",
+    "mail:action-fail": "node ./utils/send-action-fail-mail.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier . --check",
+    "format:fix": "prettier . --write",
+    "clean": "rm -rf allure-results allure-report appium-logs screenshots screencasts"
   },
   "repository": {
     "type": "git",
@@ -34,6 +44,7 @@
     "webdriverio": "^9.16.2"
   },
   "dependencies": {
+    "@wdio/allure-reporter": "^9.24.0",
     "nodemailer": "^8.0.1",
     "npm-check-updates": "^19.4.0"
   }

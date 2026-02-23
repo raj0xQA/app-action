@@ -1,6 +1,5 @@
-
-import 'dotenv/config';
-import fs from 'fs';
+import "dotenv/config";
+import fs from "fs";
 
 export const config = {
   runner: "local",
@@ -22,61 +21,67 @@ export const config = {
         showPreface: false,
       },
     ],
-  ],
-
-
-  services: [
     [
-      "appium",
+      "allure",
       {
-        args: {
-          relaxedSecurity: true,
-        },
+        outputDir: "allure-results",
       },
     ],
   ],
 
-
-
-  capabilities: [{
-    // local
-    platformName: "Android",
-    // 'appium:browserName': 'Chrome',
-    // "appium:deviceName": "Pixel_4_API_34",
-    "appium:udid": "emulator-5554",
-    // "appium:platformVersion": "14",
-    "appium:automationName": "UiAutomator2",
-    "appium:app": process.env.LOCAL_APP,
-    "appium:autoGrantPermissions": true,
-    // "appium:skipDeviceInitialization": true,
-    // "appium:skipServerInstallation": true,
-    // "appium:fullReset": false,
-    // "appium:noReset": true,
-    // 'goog:chromeOptions': {
-    //   args: [
-    //     '--user-agent=Mozilla/5.0 (Linux; Android 13; SM-S908U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.144 Mobile Safari/537.36'
-    //   ]
-    // }
-  },
+  capabilities: [
+    {
+      browserName: "chrome",
+    },
   ],
 
-  port: 4723,
+  // services: [
+  //   [
+  //     "appium",
+  //     {
+  //       args: {
+  //         relaxedSecurity: true,
+  //       },
+  //     },
+  //   ],
+  // ],
 
+  // capabilities: [{
+  //   // local
+  //   platformName: "Android",
+  //   // 'appium:browserName': 'Chrome',
+  //   // "appium:deviceName": "Pixel_4_API_34",
+  //   "appium:udid": "emulator-5554",
+  //   // "appium:platformVersion": "14",
+  //   "appium:automationName": "UiAutomator2",
+  //   "appium:app": process.env.LOCAL_APP,
+  //   "appium:autoGrantPermissions": true,
+  //   // "appium:skipDeviceInitialization": true,
+  //   // "appium:skipServerInstallation": true,
+  //   // "appium:fullReset": false,
+  //   // "appium:noReset": true,
+  //   // 'goog:chromeOptions': {
+  //   //   args: [
+  //   //     '--user-agent=Mozilla/5.0 (Linux; Android 13; SM-S908U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.144 Mobile Safari/537.36'
+  //   //   ]
+  //   // }
+  // },
+  // ],
 
-  onPrepare: async function (config, capabilities, specs) {
-    fs.mkdirSync('./screencasts', { recursive: true });
-  },
+  // port: 4723,
 
-  beforeTest: async function (test, context) {
-    await browser.startRecordingScreen({});
-  },
+  // onPrepare: async function (config, capabilities, specs) {
+  //   fs.mkdirSync("./screencasts", { recursive: true });
+  // },
 
-  afterTest: async function (test, context, result) {
-    const safeTitle = test.title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const filename = `./screencasts/${safeTitle}_${timestamp}.mp4`;
-    await browser.saveRecordingScreen(filename);
+  // beforeTest: async function (test, context) {
+  //   await browser.startRecordingScreen({});
+  // },
 
-  },
-
+  // afterTest: async function (test, context, result) {
+  //   const safeTitle = test.title.replace(/[^a-z0-9]/gi, "_").toLowerCase();
+  //   const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+  //   const filename = `./screencasts/${safeTitle}_${timestamp}.mp4`;
+  //   await browser.saveRecordingScreen(filename);
+  // },
 };
