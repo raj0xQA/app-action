@@ -44,7 +44,7 @@ export const config = {
     },
   ],
 
-
+  // port: 4723,
   // services: [
   //   [
   //     "appium",
@@ -78,20 +78,4 @@ export const config = {
   // },
   // ],
 
-  // port: 4723,
-
-  // onPrepare: async function (config, capabilities, specs) {
-  //   fs.mkdirSync("./screencasts", { recursive: true });
-  // },
-
-  // beforeTest: async function (test, context) {
-  //   await browser.startRecordingScreen({});
-  // },
-
-  // afterTest: async function (test, context, result) {
-  //   const safeTitle = test.title.replace(/[^a-z0-9]/gi, "_").toLowerCase();
-  //   const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-  //   const filename = `./screencasts/${safeTitle}_${timestamp}.mp4`;
-  //   await browser.saveRecordingScreen(filename);
-  // },
 };
