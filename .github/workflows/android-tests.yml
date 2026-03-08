@@ -64,13 +64,13 @@ jobs:
         continue-on-error: true
         with:
           ref: gh-pages
-          path: gh-pages-dir
+          path: allure-previous-history
 
       - name: Generate Allure Report
         if: always()
         uses: simple-elf/allure-report-action@v1.13
         with:
-          gh_pages: gh-pages-dir
+          gh_pages: allure-previous-history
           allure_results: allure-results
           allure_history: allure-history
           # allure_report: allure-report
