@@ -51,8 +51,7 @@ jobs:
         run: |
           npm run test
 
-
-    # --- START OF ALLURE HISTORY LOGIC ---
+      # --- START OF ALLURE HISTORY LOGIC ---
 
       - name: 📥 Get Allure History
         if: always()
@@ -64,9 +63,12 @@ jobs:
 
       - name: 📊 Generate Test report
         run: |
+          ls allure-report || echo "No allure history found"
+
+      - name: 📊 Generate Test report
+        run: |
           npm run report:generate
           ls allure-history || echo "No allure history found"
-          ls allure-report || echo "No allure report generated"
 
       - name: Copy Allure History to Report
         if: always()
@@ -74,6 +76,10 @@ jobs:
           if [ -d "allure-history" ]; then
             cp -r allure-history allure-report || true
           fi
+
+      - name: 📊 Generate Test report
+        run: |
+          ls allure-report/allure-history || echo "No allure history found"
 
       - name: 🚀 Deploy Allure Report to GitHub Pages
         if: always()
@@ -83,11 +89,6 @@ jobs:
           publish_branch: gh-pages
           publish_dir: allure-report
           keep_files: false
-
-
-
-
-
 
       # - name: Enable KVM
       #   run: |
@@ -131,6 +132,3 @@ jobs:
       #     emulator-options: -no-snapshot-save -no-window -noaudio -no-boot-anim -gpu swiftshader_indirect -camera-back none
       #     script: |
       #       echo "Emulator started and boot completed!" && set +e && true; EXIT_CODE=$?; set -e; echo "wdio_exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT; exit $EXIT_CODE
-
-
-  
