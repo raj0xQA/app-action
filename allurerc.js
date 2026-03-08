@@ -5,6 +5,6 @@ const isCI = TEST_ENV === 'ci';
 export default defineConfig({
   name: "my-report",
   output: "allure-report",
-  historyPath: isCI ? "allure-history/allure-history.jsonl" : undefined,
+  historyPath: "allure-history/allure-history.jsonl" 
   historyLimit: 10,
 });
