@@ -1,6 +1,6 @@
 describe("Android tests", () => {
   it("should add two numbers", () => {
-    expect(2 + 2).toEqual(5);
+    expect(2 + 2).toEqual(4);
   });
 
   // it("check element", async () => {
