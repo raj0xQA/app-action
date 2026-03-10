@@ -1,6 +1,6 @@
 import "dotenv/config";
 import fs from "fs";
-// const slack = require('wdio-slack-service');
+import SlackReporter from "@moroo/wdio-slack-reporter";
 
 const { SLACK_WEBHOOK_URL } = process.env;
 
@@ -32,6 +32,16 @@ export const config = {
         // historyLimit: 20,
       },
     ],
+    [
+      SlackReporter,
+      {
+        slackOptions: {
+          type: "web-api",
+          channel: process.env.SLACK_CHANNEL || "Cxxxxxxxxxx",
+          token: process.env.SLACK_BOT_TOKEN || "xoxb-xxxxxxxxxx-xxxxxx...",
+        },
+      },
+    ],
   ],
 
   capabilities: [
@@ -44,16 +54,6 @@ export const config = {
   ],
 
   // slack notification configuration
-  // services: [
-  //   [
-  //     slack,
-  //     {
-  //       webHookUrl: SLACK_WEBHOOK_URL, // Used to post notification to a particular channel
-  //       notifyOnlyOnFailure: true, // Send notification only on test failure
-  //       messageTitle: "<Wdio Test Results>", // Name of the notification
-  //     },
-  //   ],
-  // ],
 
   // port: 4723,
   // services: [

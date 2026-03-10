@@ -57,6 +57,11 @@ jobs:
         run: |
           npm run test
 
+      - name: test workspace
+        run: |
+          echo "Contents of current workspace:"
+          ls -R || echo "No files found in workspace"
+
       # --- START OF ALLURE HISTORY LOGIC ---
 
       - name: 📥 Get Allure History
@@ -69,6 +74,11 @@ jobs:
           sparse-checkout: |
             allure-history
           sparse-checkout-cone-mode: false
+
+      - name: test workspace
+        run: |
+          echo "Contents of current workspace:"
+          ls -R || echo "No files found in workspace"
 
       - name: test allure history
         run: |

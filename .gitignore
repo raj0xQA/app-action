@@ -14,11 +14,11 @@ temp/
 .out/
 
 # Local env files
-# .env
-# .env.*.local
-# .env.local
-# .env.test
-# .env.production
+.env
+.env.*.local
+.env.local
+.env.test
+.env.production
 
 # Logs
 logs/
