@@ -61,7 +61,7 @@ jobs:
         run: |
           echo "Contents of current workspace:"
           ls 
-          
+
       # --- START OF ALLURE HISTORY LOGIC ---
 
       - name: 📥 Get Allure History
@@ -70,7 +70,6 @@ jobs:
         continue-on-error: true
         with:
           ref: gh-pages
-          clean: false
           sparse-checkout: |
             allure-history
           sparse-checkout-cone-mode: false
