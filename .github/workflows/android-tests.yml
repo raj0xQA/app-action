@@ -60,8 +60,7 @@ jobs:
       - name: test workspace
         run: |
           echo "Contents of current workspace:"
-          ls -R || echo "No files found in workspace"
-
+          ls -R | grep -v "node_modules"
       # --- START OF ALLURE HISTORY LOGIC ---
 
       - name: 📥 Get Allure History
@@ -78,7 +77,7 @@ jobs:
       - name: test workspace
         run: |
           echo "Contents of current workspace:"
-          ls -R || echo "No files found in workspace"
+          ls -R | grep -v "node_modules"
 
       - name: test allure history
         run: |
