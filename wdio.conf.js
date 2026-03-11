@@ -8,7 +8,7 @@ export const config = {
   runner: "local",
   specs: ["./test/app/**/*.js"],
   maxInstances: 1,
-  logLevel: "info",
+  logLevel: "error",
   waitforTimeout: 10000,
   framework: "mocha",
   mochaOpts: {
@@ -32,19 +32,19 @@ export const config = {
         // historyLimit: 20,
       },
     ],
-    [
-      SlackReporter,
-      {
-        slackOptions: {
-          type: "web-api",
-          channel: SLACK_CHANNEL,
-          token: SLACK_BOT_TOKEN,
-        },
-        title: "E2E Test Results",
-        notifyTestFinishMessage: true,
-        uploadScreenshotOfFailedCase: true,
-      },
-    ],
+    // [
+    //   SlackReporter,
+    //   {
+    //     slackOptions: {
+    //       type: "web-api",
+    //       channel: SLACK_CHANNEL,
+    //       token: SLACK_BOT_TOKEN,
+    //     },
+    //     title: "E2E Test Results",
+    //     notifyTestFinishMessage: true,
+    //     uploadScreenshotOfFailedCase: true,
+    //   },
+    // ],
   ],
 
   capabilities: [
