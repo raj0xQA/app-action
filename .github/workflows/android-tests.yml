@@ -76,10 +76,7 @@ jobs:
           sparse-checkout: |
             allure-history
           sparse-checkout-cone-mode: false
-
-      - name: 📥 Remove redundent folder
-        if: always()
-        run: |
+      - run: |
           mv allure-history/allure-history/* allure-history/ || true
           rmdir allure-history/allure-history || true
 
