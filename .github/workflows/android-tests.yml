@@ -59,11 +59,6 @@ jobs:
         run: |
           npm run test
 
-      - name: test workspace
-        run: |
-          echo "Contents of current workspace:"
-          ls 
-
       # --- START OF ALLURE HISTORY LOGIC ---
 
       - name: 📥 Get Allure History
@@ -76,30 +71,16 @@ jobs:
           sparse-checkout: |
             allure-history
           sparse-checkout-cone-mode: false
-      - run: |
+
+      - name: 📥 Remove allure-history redundent folder
+        if: always()
+        run: |
           mv allure-history/allure-history/* allure-history/ || true
           rmdir allure-history/allure-history || true
-
-      - name: test workspace
-        run: |
-          echo "Contents of current workspace:"
-          ls 
-
-      - name: test allure history
-        run: |
-          ls
-          echo "Contents of allure-history directory:"
-          ls -R allure-history || echo "No allure history found"
 
       - name: Generate Test report
         run: |
           npm run report:generate
-
-      - name: test allure history
-        run: |
-          ls
-          echo "Contents of allure-history directory:"
-          ls -R allure-history || echo "No allure history found"
 
       - name: Copy Allure History to Report
         if: always()
@@ -108,11 +89,6 @@ jobs:
             rm -rf allure-history/.git
             cp -r allure-history allure-report || true
           fi
-       # cp -r allure-history allure-report || true
-# cp  allure-history/allure-history.jsonl allure-report || true
-      - name: 📊  Test allure history 
-        run: |
-          ls -R allure-report || echo "No allure history found"
 
       - name: 🚀 Deploy Allure Report to GitHub Pages
         if: always()
