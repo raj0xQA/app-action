@@ -41,7 +41,7 @@ env:
   EVENT_NAME: ${{github.event_name}}
   GITHUB_TOKEN: ${{secrets.GT_TOKEN}}
   # Slack environment variables for notifications
-  SLACK_CHANNEL: ${{secrets.SLACK_CHANNEL}}
+  SLACK_CHANNEL: ${{secrets.SLACK_CHANNEL_ID}}
   SLACK_OAUTH_TOKEN: ${{secrets.SLACK_OAUTH_TOKEN}}
   CTRF_SKIP_FOOTER: true
 
