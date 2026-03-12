@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { execSync } from "child_process";
 
+// npx ctrf merge ./ctrf rename the file to ctrf-report .json
 let reportPath = "./ctrf/ctrf-tests-android.test.json";
 let testSuite = "Android Test Suite Results"; 
 let suffix = "<@U0AL3V168E5> Please review";

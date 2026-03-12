@@ -21,7 +21,9 @@
     "format": "prettier . --check",
     "format:fix": "prettier . --write",
     "report:clean": "rm -rf allure-results allure-report appium-logs screenshots screencasts",
-    "test:ci": "npx slack-ctrf results ./ctrf/ctrf-tests-android.test.json"
+    "ci1": "npx slack-ctrf results ./ctrf/ctrf-tests-android.test.json",
+    "ci2": "npx slack-ctrf results ./ctrf/*.json"
+
   },
   "repository": {
     "type": "git",
