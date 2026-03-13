@@ -85,7 +85,7 @@ jobs:
       #     npm run slack:report:ci
 
       - name: Notify Slack
-        if: failure()
+        if: always()
         uses: actions/github-script@v7
         with:
          script: |
