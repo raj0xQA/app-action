@@ -1,8 +1,8 @@
 import { WebClient } from "@slack/web-api";
 import "dotenv/config";
 
-const { GITHUB_REPOSITORY, GITHUB_RUN_ID, GITHUB_RUN_NUMBER, WORKFLOW, SLACK_CHANNEL_ID, SLACK_BOT_TOKEN } = process.env;
-const client = new WebClient(SLACK_BOT_TOKEN); // add logLevel: "error" to supress warnings
+const { GITHUB_REPOSITORY, GITHUB_RUN_ID, GITHUB_RUN_NUMBER, WORKFLOW, SLACK_CHANNEL_ID, SLACK_OAUTH_TOKEN } = process.env;
+const client = new WebClient(SLACK_OAUTH_TOKEN); // add logLevel: "error" to supress warnings
 const tags = "U0AL3V168E5";
 
 // github workflow
