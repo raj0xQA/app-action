@@ -67,7 +67,6 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          exit 1
           npm ci || npm i
 
       - name: Run tests
