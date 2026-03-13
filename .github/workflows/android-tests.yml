@@ -67,6 +67,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
+          exit 1
           npm ci || npm i
 
       - name: Run tests
@@ -79,10 +80,18 @@ jobs:
         run: |
           npm run slack:report
 
-      - name: Send Slack notification for Action fail
-        if: always()
-        run: |
-          npm run slack:report:ci
+      # - name: Send Slack notification for Action fail
+      #   if: always()
+      #   run: |
+      #     npm run slack:report:ci
+
+      - name: Notify Slack
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+         script: |
+           const { default: notify } = await import('${{ github.workspace }}/utils/slack-notifier.js');
+           await notify({ context });
 
       # # --- START OF ALLURE HISTORY LOGIC ---
 
